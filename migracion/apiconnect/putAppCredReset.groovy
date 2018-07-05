@@ -1,7 +1,13 @@
 import groovy.json.*
 
 println "INICIO GET APPCREDRESET"
+/*
+def clientSecretTrue = new groovy.json.JsonSlurper()
 
+clientSecretTrue={
+	"clientSecret": true
+}
+*/
 def command = '''
  curl -k -v -X PUT \
 		-H "Content-Type: application/json" \
