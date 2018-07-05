@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: consentroot
+  name: consentroot
+spec:
+  tags:
+  - annotations: null
+    from:
+      kind: Docker
+      path: .
+    generation: null
+    importPolicy: {}
+    name: latest
+status:
+  dockerImageRepository: ""

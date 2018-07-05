@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: C:\QUERETARO\TOOLS\kompose\kompose.exe --provider openshift --file
+      docker-compose.yml convert
+    kompose.version: 1.14.0 (fa706f2)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: postgresd
+  name: postgresd
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: postgresd
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: postgresd
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_DB
+          value: hydra
+        - name: POSTGRES_PASSWORD
+          value: secret
+        - name: POSTGRES_USER
+          value: hydra
+        image: ' '
+        name: postgresd
+        ports:
+        - containerPort: 5432
+        resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - postgresd
+      from:
+        kind: ImageStreamTag
+        name: postgresd:9.6
+    type: ImageChange
+status: {}

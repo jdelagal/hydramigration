@@ -1,0 +1,16 @@
+dea
+.project
+.DS_Store
+.apiconnect
+*.sublime*
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.swp
+*.swo
+node_modules
+dist
+*xunit.xml

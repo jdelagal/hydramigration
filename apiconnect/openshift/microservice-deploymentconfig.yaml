@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: C:\QUERETARO\TOOLS\kompose\kompose.exe --provider openshift --file
+      docker-compose.yaml convert
+    kompose.version: 1.14.0 (fa706f2)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: microservice
+  name: microservice
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: microservice
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: microservice
+    spec:
+      containers:
+      - image: ' '
+        name: microservice
+        resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - microservice
+      from:
+        kind: ImageStreamTag
+        name: microservice:latest
+    type: ImageChange
+status: {}

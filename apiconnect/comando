@@ -1,0 +1,1 @@
+kompose --provider openshift --file docker-compose.yml convert

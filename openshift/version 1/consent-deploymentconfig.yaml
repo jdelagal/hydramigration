@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: C:\QUERETARO\TOOLS\kompose\kompose.exe --provider openshift --file
+      docker-compose.yml convert
+    kompose.version: 1.14.0 (fa706f2)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: consent
+  name: consent
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: consent
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: consent
+    spec:
+      containers:
+      - env:
+        - name: HYDRA_CLIENT_ID
+          value: testing
+        - name: HYDRA_CLIENT_SECRET
+          value: consent-secret
+        - name: HYDRA_URL
+          value: http://hydra:4444
+        - name: NODE_TLS_REJECT_UNAUTHORIZED
+          value: "0"
+        image: ' '
+        name: consent
+        ports:
+        - containerPort: 3000
+        resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - consent
+      from:
+        kind: ImageStreamTag
+        name: consent:latest
+    type: ImageChange
+status: {}

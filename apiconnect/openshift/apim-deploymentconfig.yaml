@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: C:\QUERETARO\TOOLS\kompose\kompose.exe --provider openshift --file
+      docker-compose.yaml convert
+    kompose.version: 1.14.0 (fa706f2)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: apim
+  name: apim
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: apim
+  strategy:
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: apim
+    spec:
+      containers:
+      - env:
+        - name: ACCEPT_LICENSE
+        - name: ES_HOST
+          value: esmaster
+        - name: ES_PORT
+          value: "9500"
+        - name: LOGSTASH_HOST
+          value: ibmlogstash
+        - name: MANAGEMENT_CLUSTER_HOST
+          value: apim
+        - name: PORTAL_LB
+          value: ibmportal
+        - name: PORTAL_PRIVATE_KEY
+          value: /keys/portal
+        - name: PORTAL_PUBLIC_KEY
+          value: /keys/portal.pub
+        - name: SMTP_HOST
+        - name: SMTP_PASSWORD
+        - name: SMTP_PORT
+        - name: SMTP_SENDER
+        - name: SMTP_USERNAME
+        image: ' '
+        name: apim
+        resources:
+          limits:
+            memory: "2147483648"
+        volumeMounts:
+        - mountPath: /ihvar
+          name: apim-ihvar
+        - mountPath: /wip
+          name: apim-wip
+        - mountPath: /keys
+          name: config-ssh-keys
+          readOnly: true
+      restartPolicy: Always
+      volumes:
+      - name: apim-ihvar
+        persistentVolumeClaim:
+          claimName: apim-ihvar
+      - name: apim-wip
+        persistentVolumeClaim:
+          claimName: apim-wip
+      - name: config-ssh-keys
+        persistentVolumeClaim:
+          claimName: config-ssh-keys
+          readOnly: true
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - apim
+      from:
+        kind: ImageStreamTag
+        name: apim:manager-v5.0.6.0
+    type: ImageChange
+status: {}

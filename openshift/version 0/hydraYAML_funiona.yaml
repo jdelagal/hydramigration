@@ -1,0 +1,110 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: >-
+      C:\QUERETARO\TOOLS\kompose\kompose.exe --provider openshift --file
+      docker-compose.yml convert
+    kompose.version: 1.14.0 (fa706f2)
+  creationTimestamp: '2018-06-19T09:13:20Z'
+  generation: 4
+  labels:
+    io.kompose.service: hydra
+  name: hydra
+  namespace: hydraserver
+  resourceVersion: '115611'
+  selfLink: /apis/apps.openshift.io/v1/namespaces/hydraserver/deploymentconfigs/hydra
+  uid: 0250b8a2-73a1-11e8-94c8-0ea301d9407b
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: hydra
+  strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: hydra
+    spec:
+      containers:
+        - args:
+            - '--dangerous-force-http'
+            - '--dangerous-auto-logon'
+            - '--disable-telemetry'
+          env:
+            - name: CONSENT_URL
+              value: 'http://localhost:3000/consent'
+            - name: DATABASE_URL
+              value: >-
+                postgres://userFMB:FBrdsdetb0KEftF6@postgresql:5432/sampledb?sslmode=disable
+            - name: FORCE_ROOT_CLIENT_CREDENTIALS
+              value: 'admin:admin-password'
+            - name: ISSUER
+              value: 'https://localhost:4444'
+            - name: SYSTEM_SECRET
+              value: youReallyNeedToChangeThis
+          image: >-
+            oryam/hydra@sha256:f93a92d6badfe92f255aac663242b5593142673bc9b3da2247a4f9322649f539
+          imagePullPolicy: IfNotPresent
+          name: hydra
+          ports:
+            - containerPort: 4444
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /hydra
+              name: volume-r5ulq
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: volume-r5ulq
+          persistentVolumeClaim:
+            claimName: postgresql
+  test: false
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - hydra
+        from:
+          kind: ImageStreamTag
+          name: 'hydra:latest'
+          namespace: hydraserver
+        lastTriggeredImage: >-
+          oryam/hydra@sha256:f93a92d6badfe92f255aac663242b5593142673bc9b3da2247a4f9322649f539
+      type: ImageChange
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: '2018-06-19T09:22:56Z'
+      lastUpdateTime: '2018-06-19T09:22:56Z'
+      message: Deployment config has minimum availability.
+      status: 'True'
+      type: Available
+    - lastTransitionTime: '2018-06-19T09:22:49Z'
+      lastUpdateTime: '2018-06-19T09:22:57Z'
+      message: replication controller "hydra-3" successfully rolled out
+      reason: NewReplicationControllerAvailable
+      status: 'True'
+      type: Progressing
+  details:
+    causes:
+      - type: ConfigChange
+    message: config change
+  latestVersion: 3
+  observedGeneration: 4
+  readyReplicas: 1
+  replicas: 1
+  unavailableReplicas: 0
+  updatedReplicas: 1

@@ -1,0 +1,64 @@
+###########################################################################
+#######             FOR DEMONSTRATION PURPOSES ONLY                 #######
+###########################################################################
+#                                                                         #
+# If you have not yet read the tutorial, do so now:                       #
+#  https://ory-am.gitbooks.io/hydra/content/tutorial.html                 #
+#                                                                         #
+# This set up is only for demonstration purposes. The login               #
+# endpoint can only be used if you follow the steps in the tutorial.      #
+#                                                                         #
+###########################################################################
+
+version: '2'
+
+services:
+  hydra:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    links:
+      - postgresd:postgresd
+#     Uncomment the following line to use mysql instead.
+#      - mysqld:mysqld
+    depends_on:
+      - hydra-migrate
+    ports:
+      - "4444:4444"
+      - "4445:4445"
+    command:
+      serve --dangerous-force-http
+    environment:
+#      - LOG_LEVEL=debug
+      - OAUTH2_ISSUER_URL=http://localhost:4444
+      - OAUTH2_CONSENT_URL=http://localhost:3000/consent
+      - OAUTH2_LOGIN_URL=http://localhost:3000/login
+      - DATABASE_URL=postgres://hydra:secret@postgresd:5432/hydra?sslmode=disable
+#     Uncomment the following line to use mysql instead.
+#      - DATABASE_URL=mysql://root:secret@tcp(mysqld:3306)/mysql?parseTime=true
+      - SYSTEM_SECRET=youReallyNeedToChangeThis
+      - OAUTH2_SHARE_ERROR_DEBUG=1
+
+  consent:
+    environment:
+      - HYDRA_URL=http://hydra:4444
+    image: oryd/hydra-login-consent-node:v1.0.0-beta.1
+    links:
+      - hydra
+    ports:
+      - "3000:3000"
+
+  postgresd:
+    image: postgres:9.6
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=hydra
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=hydra
+
+#  Uncomment the following section to use mysql instead.
+#  mysqld:
+#    image: mysql:5.7
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=secret

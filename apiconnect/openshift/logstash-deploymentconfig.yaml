@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: C:\QUERETARO\TOOLS\kompose\kompose.exe --provider openshift --file
+      docker-compose.yaml convert
+    kompose.version: 1.14.0 (fa706f2)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: logstash
+  name: logstash
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: logstash
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: logstash
+    spec:
+      containers:
+      - env:
+        - name: ACCEPT_LICENSE
+        - name: DB_HOST
+          value: apim
+        - name: ES_HOST
+          value: esmaster
+        - name: MGMT_HOST
+          value: apim
+        image: ' '
+        name: ibmlogstash
+        resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - ibmlogstash
+      from:
+        kind: ImageStreamTag
+        name: logstash:logstash-v5.0.6.0
+    type: ImageChange
+status: {}

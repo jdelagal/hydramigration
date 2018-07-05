@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: C:\QUERETARO\TOOLS\kompose\kompose.exe --provider openshift --file
+      docker-compose.yaml convert
+    kompose.version: 1.14.0 (fa706f2)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: make-ssh-keys
+  name: make-ssh-keys
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: make-ssh-keys
+  strategy:
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: make-ssh-keys
+    spec:
+      containers:
+      - image: ' '
+        name: make-ssh-keys
+        resources: {}
+        volumeMounts:
+        - mountPath: /keys
+          name: config-ssh-keys
+      restartPolicy: Always
+      volumes:
+      - name: config-ssh-keys
+        persistentVolumeClaim:
+          claimName: config-ssh-keys
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - make-ssh-keys
+      from:
+        kind: ImageStreamTag
+        name: make-ssh-keys:latest
+    type: ImageChange
+status: {}

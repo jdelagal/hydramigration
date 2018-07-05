@@ -1,0 +1,50 @@
+apiVersion: 1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: hydra
+  name: hydra
+  namespace: hydraserver
+spec:
+  replicas: 2
+  selector:
+    name: hydra
+  template:
+    metadata:
+      labels:
+        app: hydra
+        name: hydra
+    spec:
+      name: hydra
+      image: oryam/hydra:latest
+      containers:
+        - env:
+            - name: OAUTH2_ISSUER_URL
+              value: http://localhost:4444
+            - name: OAUTH2_CONSENT_URL
+              value: http://localhost:3000/consent
+            - name: OAUTH2_LOGIN_URL
+              value: http://localhost:3000/login
+            - name: DATABASE_URL
+              value: postgres://user6II:n1BjuOifurmy8dFi@postgresd:5432/sampledb?sslmode=disable
+            - name: SYSTEM_SECRET
+              value: youReallyNeedToChangeThis
+            - name: OAUTH2_SHARE_ERROR_DEBUG
+              value: 1
+      command:
+        - serve --dangerous-force-http
+        - ports:
+          - name: default
+            containerPort: 4444
+          - name: other
+            containerPort: 4445
+        - volumeMounts:
+          - name: hydra-volume
+            mountPath: /root
+      volumes:
+        - name: hydra-volume
+          configMap:
+            name: hydra
+        - name: client-data
+          secret:
+            secretName: hydra

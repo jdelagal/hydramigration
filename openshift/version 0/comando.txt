@@ -1,0 +1,210 @@
+kompose --provider openshift --file docker-compose.yml convert
+
+  --id test1 \
+  --secret consent-secret \
+  --name "Consent App Client" \
+  --grant-types client_credentials \
+  --response-types token \
+  --allowed-scopes hydra.consent 
+
+  hydra connect --url https://localhost:4444 --id admin --secret admin-password
+
+  hydra clients create --skip-tls-verify \
+  --id testing_sin_root \
+  --secret consent-secret \
+  --name "Consent App Client" \
+  --grant-types client_credentials \
+  --response-types token \
+  --allowed-scopes hydra.consent 
+  
+
+curl -s -k -X POST \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d grant_type=client_credentials \
+  -d scope=hydra.consent \
+  -u 'testing:consent-secret' \
+  https://localhost:4444/oauth2/token 
+
+curl -k -s \
+     --request POST \
+     --header "Content-Type: application/x-www-form-urlencoded" \
+     --header "Authorization: Bearer 3mCBGaA1f_FlKoq6nIzUgt4htKQbZplhBsmc76j_7_M.i6SWzUUOoSpuvPCVeyxMJQpuGMERsDyx_N2i_W8rQ94" \
+     -d "token=Ltz8CQ3n2Fcp7RT0MCwDaPZ-9cUPcjMmi6o5l8YuFZY.GmEpUbR7PuHGCjMfBtECzZE4hn_7bAu6H_r23-anz5M" \
+https://localhost:4444/oauth2/introspect
+
+hydra clients create --skip-tls-verify \
+ --id some-consumer \
+ --secret consumer-secret \
+ -g authorization_code,refresh_token,client_credentials \
+ -r token,code,id_token \
+ --allowed-scopes openid,offline,hydra.clients \
+ --callbacks http://localhost:9010/callback
+
+
+ hydra clients create --skip-tls-verify \
+ --id some-consumer \
+ --secret consumer-secret \
+ -g authorization_code,refresh_token,client_credentials \
+ -r token,code,id_token \
+ --allowed-scopes openid,offline,hydra.clients \
+ --callbacks http://localhost:9010/callback
+
+
+-----DEMO  IÑAKI ------------
+
+curl -s -k -X POST \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d grant_type=client_credentials \
+  -d client_id=XXXee58011c-b781-41a7-8238-938f7f2939a3 \
+  -d scope=read \
+  -u 'ee58011c-b781-41a7-8238-938f7f2939a3:dW7uO8jB5eR7hT6bW5wP7uG0hM7qB3iO3fX8hN6vS5cO0eN5hR' \
+  http://microservice:8080/oauth/sfsf
+
+
+curl -k -s \
+     --request GET \
+     --header "Content-Type: application/x-www-form-urlencoded" \
+     --header "Authorization: Bearer sdssdsd" \
+http://microservice:8080/private
+
+
+curl -k -s \
+     --request GET \
+     --header "Content-Type: application/x-www-form-urlencoded" \
+     --header "Authorization: Bearer 978112bc-1edb-481d-9c32-26afe9686f78" \
+http://microservice:8080/admin
+
+-------------CURL DE GESTION DE PORTAL APICONNECT ---------------------
+
+curl -X GET \
+    -u userid:pw \
+    https://<mgmt-cluster-ip>/v1/portal/orgs/{orgID}/apps
+
+
+curl -X GET \
+    -u jose.delagala@ust-global.com:!n0r1t5@C \
+    https://apim/apim/v1/portal/orgs/factoriaustglobal/apps
+
+
+
+curl -k -i -H "X-IBM-APIManagement-Context: provider_organization_name.catalog_short_name" -X GET https://management_service_address/v1/portal/products
+
+curl -k -i -H "X-IBM-APIManagement-Context: factoriaustglobal.sb" -X GET https://apim/apim/v1/portal/products
+
+GET https://apim/apim/v1/portal/config?originURL=https://ibmportal/factoriaustglobal/sb
+
+
+-----OK------------
+curl -k -v -H "X-IBM-APIManagement-Context: factoriaustglobal.sb" -H "Content-Type: application/json" -X POST -d \
+'{"username":"sdsd@gmail.com","password":"!n0r1t5@C","firstName":"sdsds","lastName":"last_name","organization":"factoriaustglobal"}' \
+https://apim/v1/portal/users/register
+
+
+curl -k -v -H "X-IBM-APIManagement-Context: factoriaustglobal.sb" -H "Content-Type: application/json" -X GET -d \
+'{"username":"jdelagal@gmail.com","password":"!n0r1t5@C","organization":"factoriaustglobal"}' \
+https://apim/v1/portal/users/register
+
+
+curl -k -v -H "X-IBM-APIManagement-Context: factoriaustglobal.sb" -H "Content-Type: application/json" -X GET \
+    -u jdelagal@gmail.com:\"!n0r1t5@C\" \
+    https://apim/v1/portal/orgs/factoriaustglobal/apps
+
+
+--------DOCS----------------------------------------
+curl -k -v  -H "Content-Type: application/json" -H -X GET \
+    https://apim/v1/portal/config?originURL=https://ibmportal/factoriaustglobal/sb
+
+
+curl -k -v  -H "Content-Type: application/json" \
+-H "Authorization:Basic amRlbGFnYWxAZ21haWwuY29tOiFuMHIxdDVAQw==" \
+-H "X-IBM-APIManagement-Context: factoriaustglobal.sb" \
+-X GET  https://apim/v1/portal/orgs
+
+curl -k -v  -H "Content-Type: application/json" \
+-H "Authorization:Basic amRlbGFnYWxAZ21haWwuY29tOiFuMHIxdDVAQw==" \
+-H "X-IBM-APIManagement-Context: factoriaustglobal.sb" \
+-X GET  https://apim/v1/portal/orgs/5ae9cdbce4b002e84d9e0d25/apps
+
+curl -k -v -X PUT \
+-H "Content-Type: application/json" \
+-H "Authorization:Basic amRlbGFnYWxAZ21haWwuY29tOiFuMHIxdDVAQw==" \
+-H "X-IBM-APIManagement-Context: factoriaustglobal.sb" \
+-d '{"clientSecret":true}' \
+ https://apim/v1/portal/orgs/5ae9cdbce4b002e84d9e0d25/apps/5b0bdfaae4b002e84d9e811e/credentials/reset
+
+ curl -k -v -X PUT \
+-H "Content-Type: application/json" \
+-H "Authorization:Basic amRlbGFnYWxAZ21haWwuY29tOiFuMHIxdDVAQw==" \
+-H "X-IBM-APIManagement-Context: factoriaustglobal.sb" \
+-d @clientSecret.json \
+ https://apim/v1/portal/orgs/5ae9cdbce4b002e84d9e0d25/apps/5b0bdfaae4b002e84d9e811e/credentials/reset
+
+---------------------------Create client hydra ---------------------------
+
+
+curl -s -k -X POST \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -H "Authorization: Basic YWRtaW46YWRtaW4tcGFzc3dvcmQ=" \
+        -d grant_type=client_credentials \
+        -d scope=hydra \
+        -u 'admin:demo-password' \
+        https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token 
+
+
+curl -s -k -X GET \
+    -H "Content-Type: application/json" \
+        -H "Authorization:bearer vVIRMzGHUaJFV1KEMg-YoR95sRYglXM6CJUIBmVhFt0.Nvj3Nif2iE1KJEigXNnA10Sp8nyewGNahdjb0vAll6k" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients"
+
+curl -s -k -X GET \
+    -H "Content-Type: application/json" \
+        -H "Authorization:bearer ochmIUvCQfSgRBgHkQIuKeYEp4OjItV-zcaAmwool7w.I-mnmtZQO6d3m6Fh9LXtX4y7XPrjMwmE5z1s0tDuWCg" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/accesoexterno"
+
+curl -s -k \
+  -X POST \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer ZK8NhSlAxX973z4Js-WkcR9QLzoWiPM5KXM0YW59sdg.wHloKbUYgIJDykN0zvS3ns6Abg0GgPUr2Dt98NVi1vI" \
+  -d '{"id":"clientecreadodesdefuera","client_secret":"clientecreadodesdefuera"}, "grant_type":"client_credentials" ' \
+  "https://hydra-hydraserver.192.168.99.104.nip.io/clients"
+
+
+  curl -s -k \
+  -X PUT \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer ochmIUvCQfSgRBgHkQIuKeYEp4OjItV-zcaAmwool7w.I-mnmtZQO6d3m6Fh9LXtX4y7XPrjMwmE5z1s0tDuWCg" \
+  -d '{"client_name":"clientecreadodesdefuera", "id":"clientecreadodesdefuera","client_secret":"otrosecreto", "grant_type":"client_credentials"}' \
+  "https://hydra-hydraserver.192.168.99.104.nip.io/clients/clientecreadodesdefuera"
+
+  curl -s -k \
+  -X POST \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer ZK8NhSlAxX973z4Js-WkcR9QLzoWiPM5KXM0YW59sdg.wHloKbUYgIJDykN0zvS3ns6Abg0GgPUr2Dt98NVi1vI" \
+  -d '{"id":"otramasdesdefuera","client_secret":"otramasdesdefuera"}, "grant_type":"client_credentials" ' \
+  "https://hydra-hydraserver.192.168.99.104.nip.io/clients"
+
+
+
+    curl -s -k \
+  -X DELETE \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer ZK8NhSlAxX973z4Js-WkcR9QLzoWiPM5KXM0YW59sdg.wHloKbUYgIJDykN0zvS3ns6Abg0GgPUr2Dt98NVi1vI" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/otramasdesdefuera"
+
+
+  curl -s -k -X GET \
+    -H "Content-Type: application/json" \
+        -H "Authorization:bearer ZK8NhSlAxX973z4Js-WkcR9QLzoWiPM5KXM0YW59sdg.wHloKbUYgIJDykN0zvS3ns6Abg0GgPUr2Dt98NVi1vI" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients"
+
+  curl -s -k \
+  -X POST \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer ZK8NhSlAxX973z4Js-WkcR9QLzoWiPM5KXM0YW59sdg.wHloKbUYgIJDykN0zvS3ns6Abg0GgPUr2Dt98NVi1vI" \
+  -d '{"id":"otramasdesdefuera","client_secret":"otramasdesdefuera"}, "grant_type":"client_credentials" ' \
+  "https://hydra-hydraserver.192.168.99.104.nip.io/clients"
+
+  curl -s -k -X GET \
+    -H "Content-Type: application/json" \
+        -H "Authorization:bearer ZK8NhSlAxX973z4Js-WkcR9QLzoWiPM5KXM0YW59sdg.wHloKbUYgIJDykN0zvS3ns6Abg0GgPUr2Dt98NVi1vI" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/otramasdesdefuera"

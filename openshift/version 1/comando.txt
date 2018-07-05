@@ -1,0 +1,100 @@
+kompose --provider openshift --file docker-compose.yml convert
+
+oc new-app . --strategy=docker --name test 
+(con Dockerfile debajo)
+
+curl -s -k -X POST \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d grant_type=client_credentials \
+  -d scope=hydra.consent \
+  -u 'testing:consent-secret' \
+  https://localhost:4444/oauth2/token 
+
+
+  hydra connect --url https://hydra-hydraserver.192.168.99.104.nip.io --id admin --secret admin-password
+
+    hydra clients create --skip-tls-verify \
+  --id testing_nuevo \
+  --secret consent-secret \
+  --name "Consent App Client" \
+  --grant-types client_credentials \
+  --response-types token \
+  --allowed-scopes hydra.consent 
+
+
+  curl -s -k -X POST \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d grant_type=client_credentials \
+  -d scope=hydra.consent \
+  -u 'testing:consent-secret' \
+  https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token 
+
+
+  curl -k -s \
+     --request POST \
+     --header "Content-Type: application/x-www-form-urlencoded" \
+     --header "Authorization: Bearer jnQc6JGuusYCGsr8269C9OLRUkTLRkXmd9ql6SVywOQ.tvAY4-33knUThw01laJgmZWw1C6-w5N_8TpvgroasV4" \
+     -d "token=4Jzmy3ePhaF415sSsI3OPnXUC9dxtvnn8wL71nGcK3k.tCdD11Zm9UEDPi5C-N_L95lbdfn6UGo6462okBjHGUY" \
+https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/introspect 
+
+
+    hydra clients create --skip-tls-verify \
+  --id testin_desde_fuera \
+  --secret consent-desde-fuera \
+  --name "Consent App Client" \
+  --grant-types client_credentials \
+  --response-types token \
+  --allowed-scopes hydra.fuera 
+
+   hydra clients create --skip-tls-verify \
+  --id testin_desde_fuera \
+  --secret consent-desde-fuera \
+  --name "Consent App Client" \
+  --grant-types client_credentials \
+  --response-types token \
+  --allowed-scopes hydra.fuera 
+
+    curl -s -k -X POST \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d grant_type=client_credentials \
+  -d scope=hydra.fuera  \
+  -u 'testin_desde_fuera:consent-desde-fuera' \
+  https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token 
+
+
+  curl -k -s \
+     --request POST \
+     --header "Content-Type: application/x-www-form-urlencoded" \
+     --header "Authorization: Bearer jnQc6JGuusYCGsr8269C9OLRUkTLRkXmd9ql6SVywOQ.tvAY4-33knUThw01laJgmZWw1C6-w5N_8TpvgroasV4" \
+     -d "token=RGYS9KsSGHpiSbuSO-ZBr3h__ECERvyVkkR2690hEJ0.G9pN5Xz9dKxFfcaMUw2MiDMHpjnlSM_cuO0-GaWyNh0" \
+https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/introspect
+
+
+    curl -s -k \
+    --request POST \
+    --header "Content-Type: application/x-www-form-urlencoded" \
+    --header "Authorization: Bearer 
+    NuUiv1dUebC63kuBYmD1ghQghiOvAxEzZPiqBmw0b2E.82lQbYiBwItsRldl9sweHuaCJC_qFys007MuABwHm5Q" \
+  -d grant_type=client_credentials \
+  -d scope=hydra.test1  \
+  -d id=test1 \
+  -d secret=test1 \
+  https://hydra-hydraserver.192.168.99.104.nip.io/clients
+
+
+  curl -k -s \
+     --request POST \
+     --header "Content-Type: application/x-www-form-urlencoded" \
+     --header "Authorization: Bearer jnQc6JGuusYCGsr8269C9OLRUkTLRkXmd9ql6SVywOQ.tvAY4-33knUThw01laJgmZWw1C6-w5N_8TpvgroasV4" \
+     -d "token=RGYS9KsSGHpiSbuSO-ZBr3h__ECERvyVkkR2690hEJ0.G9pN5Xz9dKxFfcaMUw2MiDMHpjnlSM_cuO0-GaWyNh0" \
+https://hydra-hydraserver.192.168.99.104.nip.io/clients
+
+
+
+   hydra clients create --skip-tls-verify \
+  --id accesoexterno \
+  --secret accesoexterno \
+  --name "Acceso Externo App Client" \
+  --grant-types client_credentials \
+  --response-types token \
+  --allowed-scopes hydra.accesoexterno 
