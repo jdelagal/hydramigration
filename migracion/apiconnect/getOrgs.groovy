@@ -1,23 +1,35 @@
 import groovy.json.*
 
 println "INICIO GET ORGS"
+println args[0]
+println args[1]
+println args[2]
+println args[3]
+println args[4]
 
-String getIdConsumerOrg(){
+def paramArray = []
+paramArray.add(args[0])
+paramArray.add(args[1])
+paramArray.add(args[2])
+paramArray.add(args[3])
+paramArray.add(args[4])
+
+//println getIdConsumerOrg(paramArray)
+
+String getIdConsumerOrg(paramArray){
 		/*parametros de entrada*/
-	//def consumerOwner = args[0]
-	def comsumerOwner = 'jdelagal@gmail.com'
-	//def consumerOwner = args[1]
-	def passwordOwner = '!n0r1t5@C'
-	//def consumerOwner = args[2]
-	def hostManager = 'apim'
-	//def consumerOwner = args[3]
-	def contextOrgProvider = 'factoriaustglobal.sb'
-	//def orgConsumer = args[4]
-	def orgConsumer='myorganization'
-	/*parametros de salida*/
-	def idOrgConsumidora=''
+	def consumerOwner = paramArray[0]
+	//def comsumerOwner = 'jdelagal@gmail.com'
+	def passwordOwner = paramArray[1]
+	//def passwordOwner = '\!n0r1t5@C'
+	def hostManager = paramArray[2]
+	//def hostManager = 'apim'
+	def contextOrgProvider = paramArray[3]
+	//def contextOrgProvider = 'factoriaustglobal.sb'
+	def orgConsumer = paramArray[4]
+	//def orgConsumer='myorganization'
 
-	def tokenautorization = (comsumerOwner+':'+passwordOwner).bytes.encodeBase64().toString()
+	def tokenautorization = (consumerOwner+':'+passwordOwner).bytes.encodeBase64().toString()
 
 	def cadenaAEjecutarOrgs = """
 	curl -k -v   -H "Content-Type: application/json"
