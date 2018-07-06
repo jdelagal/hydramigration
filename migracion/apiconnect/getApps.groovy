@@ -14,9 +14,9 @@ paramArray.add(args[2])
 paramArray.add(args[3])
 paramArray.add(args[4])
 
-println getIdApps(paramArray)
+//println getIdApps(paramArray)
 
-String getIdApps(paramArray){
+String[] getIdApps(paramArray){
 	/*parametros de entrada*/
 	def consumerOwner = paramArray[0]
 	//def comsumerOwner = 'jdelagal@gmail.com'
@@ -41,8 +41,8 @@ String getIdApps(paramArray){
 
 	def cadenaAEjecutarApps = """
 		curl -k -v  -H "Content-Type: application/json" \
-				 -H "Authorization:Basic $tokenautorization"
-				 -H "X-IBM-APIManagement-Context: $contextOrgProvider" 
+				 -H "Authorization:Basic $tokenautorization" \
+				 -H "X-IBM-APIManagement-Context: $contextOrgProvider" \
 				 -X GET  https://$hostManager/v1/portal/orgs/$idConsumerOrg/apps
 						  """
 
