@@ -12,16 +12,24 @@ paramArray.add(args[4])
 def shellCredentials = getShell('addConsumers.groovy')
 def credentials  = shellCredentials.getCredentials(paramArray)
 
-/*
-for(i=0;i<2;i++){
-	def cred = credentials[i];
-	if (appId!=null){
-		sRetConsumers.add(addConsumer(appId, idConsumerOrg, tokenautorization, paramArray ))
-	}
-} 
-*/
+for(i=0;i<credentials.length;i++){
+	def cred = credentials[i]
+	def jsonSlurper = new JsonSlurper()
+	def jsonCred = jsonSlurper.parseText(cred)
 
-println credentials
+	if (jsonCred!=null){
+		def clientID = jsonCred.clientID
+		def clientSecret = jsonCred.clientSecret
+
+		def command = """
+			redis-cli \
+			hmset $clientID secreto $clientSecret entorno dev
+			  		  """
+	 	command.execute().text
+	 	println clientID + ': secreto y entorno guardado'
+	}
+	
+} 
 
 def getShell(pScript){
 	GroovyShell shell = new GroovyShell()
