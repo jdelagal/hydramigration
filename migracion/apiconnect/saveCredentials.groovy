@@ -1,4 +1,5 @@
 import groovy.json.*
+def shellCredentials = getShell('addConsumers.groovy')
 
 println "INICIO GET APPSAVECREDENTIALS"
 
@@ -9,7 +10,7 @@ paramArray.add(args[2])
 paramArray.add(args[3])
 paramArray.add(args[4])
 
-def shellCredentials = getShell('addConsumers.groovy')
+
 def credentials  = shellCredentials.getCredentials(paramArray)
 
 for(i=0;i<credentials.length;i++){
@@ -23,7 +24,7 @@ for(i=0;i<credentials.length;i++){
 
 		def command = """
 			redis-cli \
-			hmset $clientID secreto $clientSecret entorno dev
+			hmset $clientID secretodev $clientSecret
 			  		  """
 	 	command.execute().text
 	 	println clientID + ': secreto y entorno guardado'
