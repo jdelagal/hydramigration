@@ -35,7 +35,7 @@ String[] getCredentials(paramArray){
 	def getApps = getShell('getApps.groovy')
 	def aApps = getApps.getIdApps(paramArray)
 	
-	for(i=0;i<2;i++){
+	for(i=0;i<aApps.length;i++){
 		def appId = aApps[i];
 		if (appId!=null){
 			sRetConsumers.add(addConsumer(appId, idConsumerOrg, tokenautorization, paramArray ))
