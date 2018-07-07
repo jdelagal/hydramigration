@@ -139,6 +139,9 @@ curl -k -v -X PUT \
 -d @clientSecret.json \
  https://apim/v1/portal/orgs/5ae9cdbce4b002e84d9e0d25/apps/5b0bdfaae4b002e84d9e811e/credentials/reset
 
+ groovy addConsumers.groovy jdelagal@gmail.com \!n0r1t5@C apim factoriaustglobal.sb myorganization
+
+ 
 ---------------------------Create client hydra ---------------------------
 
 

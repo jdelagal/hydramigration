@@ -29,13 +29,12 @@ String[] getCredentials(paramArray){
 	/*parámatros de salida*/
 	def sRetConsumers = []
 	
-	GroovyShell shell = new GroovyShell()
-	def getOrgs = shell.parse(new File('getOrgs.groovy'))
+	def getOrgs = getShell('getOrgs.groovy')	
 	def idConsumerOrg = getOrgs.getIdConsumerOrg(paramArray)
 
-	def getApps = shell.parse(new File('getApps.groovy'))
+	def getApps = getShell('getApps.groovy')
 	def aApps = getApps.getIdApps(paramArray)
-
+	
 	for(i=0;i<2;i++){
 		def appId = aApps[i];
 		if (appId!=null){
@@ -47,6 +46,12 @@ String[] getCredentials(paramArray){
 	return sRetConsumers
 		
 }
+
+def getShell(pScript){
+	GroovyShell shell = new GroovyShell()
+	return shell.parse(new File(pScript))
+}
+
 def addConsumer(appId, idConsumerOrg, tokenautorization, paramArray){
 
 	/*parametros de entrada*/
@@ -68,7 +73,7 @@ def addConsumer(appId, idConsumerOrg, tokenautorization, paramArray){
 			-H "X-IBM-APIManagement-Context: $contextOrgProvider" \
 			-d @clientSecretTrue.json \
 			https://$hostManager/v1/portal/orgs/$idConsumerOrg/apps/$appId/credentials/reset
-					  """
+				 """
 					  
 	def jsonSlurper = new JsonSlurper()
 	return jsonSlurper.parseText(command.execute().text)
