@@ -2,7 +2,7 @@ import groovy.json.*
 
 println "INICIO GET ACCESSADMINTOKEN"
 
-println getAccessAdminToken()
+//println getAccessAdminToken()
 
 def getAccessAdminToken(){
 		/*parametros de entrada*/
