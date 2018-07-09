@@ -120,6 +120,11 @@ curl -k -v  -H "Content-Type: application/json" \
 -H "X-IBM-APIManagement-Context: factoriaustglobal.sb" \
 -X GET  https://apim/v1/portal/orgs
 
+        curl -k -v -H "Content-Type: application/json" \
+                                 -H "Authorization:Basic amRlbGFnYWxAZ21haWwuY29tOlwhbjByMXQ1QEM=" \
+                                 -H "X-IBM-APIManagement-Context: factoriaustglobal.sb" \
+                                 -X GET  https://apim/v1/portal/orgs
+
 curl -k -v  -H "Content-Type: application/json" \
 -H "Authorization:Basic amRlbGFnYWxAZ21haWwuY29tOiFuMHIxdDVAQw==" \
 -H "X-IBM-APIManagement-Context: factoriaustglobal.sb" \
@@ -140,8 +145,23 @@ curl -k -v -X PUT \
  https://apim/v1/portal/orgs/5ae9cdbce4b002e84d9e0d25/apps/5b0bdfaae4b002e84d9e811e/credentials/reset
 
  groovy addConsumers.groovy jdelagal@gmail.com \!n0r1t5@C apim factoriaustglobal.sb myorganization
-
  
+ groovy saveCredentials.groovy jdelagal@gmail.com \!n0r1t5@C apim factoriaustglobal.sb myorganization
+ 
+ groovy getOrgs.groovy jdelagal@gmail.com \!n0r1t5@C apim factoriaustglobal.sb myorganization
+
+ docker run -d -u root -it --rm --name daimongroovyrediscli -p 6379:6379 jdelagal/groovy:version3 redis-server
+
+        sh curl -k -v  -H "Content-Type: application/json" \
+                                -H "Authorization:Basic amRlbGFnYWxAZ21haWwuY29tOiFuMHIxdDVAQw==" \
+                                -H "X-IBM-APIManagement-Context: factoriaustglobal.sb" \
+                                -X GET  https://apim/v1/portal/orgs
+
+
+curl -k -v -H 'Content-Type: application/json' -H 'Authorization:Basic amRlbGFnYWxAZ21haWwuY29tOiFuMHIxdDVAQw==' -H 'X-IBM-APIManagement-Context: factoriaustglobal.sb' -X GET  https://apim/v1/portal/orgs
+
+new File('test1.sh').write curl -k -v
+redis-server --service-install redis.windows.conf
 ---------------------------Create client hydra ---------------------------
 
 

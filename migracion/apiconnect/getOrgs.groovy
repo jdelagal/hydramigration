@@ -14,7 +14,7 @@ paramArray.add(args[2])
 paramArray.add(args[3])
 paramArray.add(args[4])
 
-//println getIdConsumerOrg(paramArray)
+println getIdConsumerOrg(paramArray)
 
 String getIdConsumerOrg(paramArray){
 		/*parametros de entrada*/
@@ -32,11 +32,12 @@ String getIdConsumerOrg(paramArray){
 	def tokenautorization = (consumerOwner+':'+passwordOwner).bytes.encodeBase64().toString()
 
 	def cadenaAEjecutarOrgs = """
-	curl -k -v   -H "Content-Type: application/json"
-				 -H "Authorization:Basic $tokenautorization"
-				 -H "X-IBM-APIManagement-Context: $contextOrgProvider" 
-				 -X GET  https://$hostManager/v1/portal/orgs
+	curl -k -v  -H \"Content-Type: application/json\" \\
+				-H \"Authorization:Basic $tokenautorization\" \\
+				-H \"X-IBM-APIManagement-Context: $contextOrgProvider\" \\ 
+				-X GET  https://$hostManager/v1/portal/orgs
 						  """
+
 	def jsonSlurper = new JsonSlurper()
 	def jsonOrgs = jsonSlurper.parseText(cadenaAEjecutarOrgs.execute().text)
 		/*buscamos el id de nuestra organizacion*/

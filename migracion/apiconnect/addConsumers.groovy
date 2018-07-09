@@ -75,8 +75,7 @@ def addConsumer(appId, idConsumerOrg, tokenautorization, paramArray){
 			https://$hostManager/v1/portal/orgs/$idConsumerOrg/apps/$appId/credentials/reset
 				 """
 					  
-	//def jsonSlurper = new JsonSlurper()
-	//return jsonSlurper.parseText(command.execute().text)
+	def jsonSlurper = new JsonSlurper()
 	return command.execute().text
 }
 
