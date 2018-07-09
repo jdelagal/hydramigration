@@ -172,7 +172,14 @@ curl -s -k -X POST \
         -d scope=hydra \
         -u 'admin:demo-password' \
         https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token 
-
+---debugg---
+        curl -s -k -X POST \
+        -H 'Content-Type: application/x-www-form-urlencoded' \
+        -H 'Authorization: Basic YWRtaW46YWRtaW4tcGFzc3dvcmQ=' \
+        -d 'grant_type=client_credentials' \
+        -d 'scope=hydra' \
+        -u 'admin:demo-password' \
+        https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token
 
 curl -s -k -X GET \
     -H "Content-Type: application/json" \
