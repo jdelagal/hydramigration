@@ -1,0 +1,26 @@
+{
+  "owner": "brett.porter@axial.net",
+  "scope": "read replace update delete create",
+  "public": false,
+  "client_name": "incidencia",
+  "redirect_uris": [
+    "https://integration.axial.net/home",
+    "https://integration.axial.net/some/other/restricted/home"
+  ],
+  "grant_types": [
+    "implicit",
+    "refresh_token",
+    "authorization_code",
+    "password",
+    "client_credentials"
+  ],
+  "response_types": [
+    "code",
+    "token",
+    "id_token"
+  ],
+  "client_uri": "https://staging.axial.net/company/admin",
+  "contacts": [
+    "brett.porter@axial.net"
+  ]
+}

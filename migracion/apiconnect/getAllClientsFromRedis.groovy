@@ -17,10 +17,37 @@ def getAllClientsFromRedis(){
 		def client = cadenaClients[i];
 		def ret = buscaClientConSecreto(client)
 		if(ret.contains("1")){
-			cadenaClientsConSecreto.add(client)	
+			def retSecreto = getSecretoFromClient(client)
+			
+			def jsonClient = {}
+
+			def secretoId = buscaSecreto(client)
+			jsonClient.id = client
+			jsonClient.client_secret = secretoId
+			//println jsonClient.id
+			//println jsonClient.client_secret
+			println jsonClient.class
+			cadenaClientsConSecreto.add(jsonClient)	
 		}		
 	}
 	return cadenaClientsConSecreto
+}
+
+def buscaSecreto(def client){
+	def cadenaClientsConSecretoEncontrado = [];
+	def commandBuscaSecreto = """
+					redis-cli \
+					hget $client secretodev
+							  """
+    return commandBuscaSecreto.execute().text 
+}
+
+def getSecretoFromClient(def client){
+	def getSecreto = """
+					redis-cli \
+					hexists $client secretodev
+							  """
+    return getSecreto.execute().text 
 }
 
 def buscaClientConSecreto(def client){

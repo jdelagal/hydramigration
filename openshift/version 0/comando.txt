@@ -50,6 +50,7 @@ hydra clients create --skip-tls-verify \
  --callbacks http://localhost:9010/callback
 
 
+
 -----DEMO  IÑAKI ------------
 
 curl -s -k -X POST \
@@ -238,3 +239,56 @@ curl -s -k \
     -H "Content-Type: application/json" \
         -H "Authorization:bearer ZK8NhSlAxX973z4Js-WkcR9QLzoWiPM5KXM0YW59sdg.wHloKbUYgIJDykN0zvS3ns6Abg0GgPUr2Dt98NVi1vI" \
     "https://hydra-hydraserver.192.168.99.104.nip.io/clients/otramasdesdefuera"
+
+
+  curl -s -k -X POST \
+      -H "Content-Type: application/x-www-form-urlencoded" \
+      -H "Authorization: Basic YWNjZXNvZXh0ZXJubzphY2Nlc29leHRlcm5v" \
+      -d grant_type=client_credentials \
+      -d scope=hydra.accesoexterno \
+     https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token
+
+  curl -s -k -X POST \
+      -H "Content-Type: application/x-www-form-urlencoded" \
+      -d grant_type=client_credentials \
+      -d scope=hydra.accesoexterno \
+      -u accesoexterno:accesoexterno \
+     https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token
+
+        curl -s -k -X POST \
+        -H 'Content-Type: application/x-www-form-urlencoded' \
+        -H 'Authorization: Basic YWRtaW46YWRtaW4tcGFzc3dvcmQ=' \
+        -d 'grant_type=client_credentials' \
+        -d 'scope=hydra' \
+        -u 'admin:demo-password' \
+        https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token
+
+  curl -s -k \
+  -X POST \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer 37joXh-BWSwRGjppB3a2qhMjNFApYW__6L0cNMqCBpY.Qe3sPm7AtJKb7Q2pF_i2EbfL9z19zpL_tgDUV81O9l8" \
+  -d '{"id":"incidencia","client_secret":"incidencia","scope":"hydra.incidencia"}' \
+  -d grant_type:client_credentials \
+  "https://hydra-hydraserver.192.168.99.104.nip.io/clients"
+
+    curl -s -k \
+  -X DELETE \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer 37joXh-BWSwRGjppB3a2qhMjNFApYW__6L0cNMqCBpY.Qe3sPm7AtJKb7Q2pF_i2EbfL9z19zpL_tgDUV81O9l8" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/incidencia"
+
+  curl -s -k \
+  -X PUT \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer 4-pAS-oeb4fY0vzIDytRD-gSUMHgxHffbsTH7VNRBVc.jpqctPpmLuEkToVwHkQkAfr2FDZneio9pDcaq-S7YDc" \
+  -d '{"client_name":"incidencia", "id":"incidencia","client_secret":"incidencia", "grant_type":"client_credentials"}' \
+  "https://hydra-hydraserver.192.168.99.104.nip.io/clients/incidencia"
+
+  curl -s -k -X POST \
+        -H 'Content-Type: application/x-www-form-urlencoded' \
+        -d 'grant_type=client_credentials' \
+        -d 'scope=hydra.incidencia' \
+        -u "incidencia:incidencia" \
+        https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token
+
+https://github.com/cheddarwhizzy/hydra-poc

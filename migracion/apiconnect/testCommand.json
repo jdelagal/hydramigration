@@ -1,0 +1,90 @@
+curl -s -k \
+  -X DELETE \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer 37joXh-BWSwRGjppB3a2qhMjNFApYW__6L0cNMqCBpY.Qe3sPm7AtJKb7Q2pF_i2EbfL9z19zpL_tgDUV81O9l8" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/incidencia"
+
+curl -s -k \
+  -X POST \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer WyWmLRNB9wAedwIGexvc7yFHuGol-kcmDnkGTfxZwfc.16rW80TTOpg28cYnCqIGl66WoMplE7aI8U-iLYJmM6I" \
+  -d '{"id":"incidencia","client_secret":"incidencia","scope":"hydra.incidencia",
+		"grant_types": [
+		    "implicit",
+		    "refresh_token",
+		    "authorization_code",
+		    "password",
+		    "client_credentials"
+		]
+	  }' \
+  "https://hydra-hydraserver.192.168.99.104.nip.io/clients" 
+
+
+curl -s -k \
+  -X POST \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer WyWmLRNB9wAedwIGexvc7yFHuGol-kcmDnkGTfxZwfc.16rW80TTOpg28cYnCqIGl66WoMplE7aI8U-iLYJmM6I" \
+  -d '{"id":"incidencia","client_secret":"incidencia","scope":"hydra.incidencia",
+		"grant_types": [
+		    "client_credentials"
+		]
+	  }' \
+  "https://hydra-hydraserver.192.168.99.104.nip.io/clients" 
+
+
+curl -s -k -X POST \
+        -H 'Content-Type: application/x-www-form-urlencoded' \
+        -d 'grant_type=client_credentials' \
+        -d 'scope=hydra.incidencia' \
+        -u "incidencia:incidencia" \
+        https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token
+
+
+
+curl -s -k -X POST \
+        -H 'Content-Type: application/x-www-form-urlencoded' \
+        -d 'grant_type=client_credentials' \
+        -d 'scope=hydra.consent' \
+        -u "testing:consent-secret" \
+        https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token
+
+---------------------analisis final--------------------
+curl -s -k -X POST \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -H "Authorization: Basic YWRtaW46YWRtaW4tcGFzc3dvcmQ=" \
+        -d grant_type=client_credentials \
+        -d scope=hydra \
+        -u 'admin:demo-password' \
+        https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token 
+
+curl -s -k -X GET \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+        -H "Authorization: bearer g_vct9C0SJw94zoAokTeXoLWjzgIW9qJwFDlh41WDHU.CDpEbWDCkvBS07E6w5LWxBRCZ7ZrnbPozW8SmxrLA54" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/testing"
+
+curl -s -k \
+  -X DELETE \
+  -H "Content-Type: application/json" \
+        -H "Authorization: bearer g_vct9C0SJw94zoAokTeXoLWjzgIW9qJwFDlh41WDHU.CDpEbWDCkvBS07E6w5LWxBRCZ7ZrnbPozW8SmxrLA54" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/testing"
+
+
+curl -s -k \
+  -X POST \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer g_vct9C0SJw94zoAokTeXoLWjzgIW9qJwFDlh41WDHU.CDpEbWDCkvBS07E6w5LWxBRCZ7ZrnbPozW8SmxrLA54" \
+  -d '{"id":"testing","client_secret":"consent-secret","scope":"hydra.consent","client_name": "Consent App Client",
+		"grant_types": [
+		    "client_credentials"
+		]
+	  }' \
+  "https://hydra-hydraserver.192.168.99.104.nip.io/clients" 
+
+curl -s -k -X POST \
+        -H 'Content-Type: application/x-www-form-urlencoded' \
+        -d 'grant_type=client_credentials' \
+        -d 'scope=hydra.consent' \
+        -u "testing:consent-secret" \
+        https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token
+
+
