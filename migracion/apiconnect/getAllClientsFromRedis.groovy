@@ -26,7 +26,6 @@ def getAllClientsFromRedis(){
 			jsonClient.client_secret = secretoId
 			//println jsonClient.id
 			//println jsonClient.client_secret
-			println jsonClient.class
 			cadenaClientsConSecreto.add(jsonClient)	
 		}		
 	}

@@ -15,10 +15,10 @@ def getAllClientsFromHydra(){
 		    -H \"Authorization:bearer $accessAdminToken\" \\
 		    https://hydra-hydraserver.192.168.99.104.nip.io/clients
 						  """
-	println cadenaAEjecutarGetAllClients
+	//println cadenaAEjecutarGetAllClients
     def jsonSlurper = new JsonSlurper()
 	def jsonAllClients = jsonSlurper.parseText(cadenaAEjecutarGetAllClients.execute().text)
-	println jsonAllClients
+	return jsonAllClients
 }
 
 
