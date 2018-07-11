@@ -2,7 +2,7 @@
   "id": "replace",
   "client_secret": "replace",
   "owner": "ISBAN MX",
-  "scope": "hydra.migration.replace",
+  "scope": "hydra.migration",
   "public": false,
   "client_name": "ISBAN MX",
   "redirect_uris": [

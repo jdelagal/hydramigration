@@ -92,7 +92,9 @@ curl -s -k -X POST \
 curl -s -k \
   -X DELETE \
   -H "Content-Type: application/json" \
-        -H "Authorization:bearer 4v8GCwwv1HuiPDi96Mh6rE9WnpWZbbQQxeQGG4bFTwE.SxmE5NZdU2TWubkVe2Sp5NW7iWe01gpfpB8Vl0FdaCI" \
-    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/8c7840cb-0e88-4b09-820f-a18715e463d3"
+        -H "Authorization:bearer L9GT0zr3R4wTu6z2IQ6-yGgdDTGdXjCExqTD29JZsCA.GbPa6xWJI6T24dFT7Klzo7h5gDT0nl0eo2NvJ9G-_0w" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/a85a25c9-2d4b-4f6f-af48-8c5f960e73fb"
 
 
+comandos: 
+groovy addClient.groovy 8c7840cb-0e88-4b09-820f-a18715e463d3 oE0pC8xK1aP0hB5bA4vC5tO0yM5aX8nJ5cY2aE0oV0iQ3wB7eO hydra-hydraserver.192.168.99.104.nip.io
