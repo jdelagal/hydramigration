@@ -4,6 +4,10 @@ println "INICIO GET ALL CLIENTS"
 
 println getAllClientsFromRedis()
 
+/* 
+	11-jul-2018
+	Funcion que retorna todos los clientes guardados en REDIS
+*/
 def getAllClientsFromRedis(){
 	def command = """
 	redis-cli \
@@ -17,11 +21,9 @@ def getAllClientsFromRedis(){
 		def client = cadenaClients[i];
 		def ret = buscaClientConSecreto(client)
 		if(ret.contains("1")){
-			def retSecreto = getSecretoFromClient(client)
-			
 			def jsonClient = {}
 
-			def secretoId = buscaSecreto(client)
+			def secretoId = getSecreto(client)
 			jsonClient.id = client
 			jsonClient.client_secret = secretoId
 			//println jsonClient.id
@@ -32,7 +34,11 @@ def getAllClientsFromRedis(){
 	return cadenaClientsConSecreto
 }
 
-def buscaSecreto(def client){
+/* 
+	11-jul-2018
+	Funcion que retorna el secreto del cliente
+*/
+def getSecreto(def client){
 	def cadenaClientsConSecretoEncontrado = [];
 	def commandBuscaSecreto = """
 					redis-cli \
@@ -41,14 +47,10 @@ def buscaSecreto(def client){
     return commandBuscaSecreto.execute().text 
 }
 
-def getSecretoFromClient(def client){
-	def getSecreto = """
-					redis-cli \
-					hexists $client secretodev
-							  """
-    return getSecreto.execute().text 
-}
-
+/* 
+	11-jul-2018
+	Funcion que retorna si existe secreto de cliente
+*/
 def buscaClientConSecreto(def client){
 	def cadenaClientsConSecretoEncontrado = [];
 	def commandBuscaSecreto = """
@@ -58,6 +60,11 @@ def buscaClientConSecreto(def client){
     return commandBuscaSecreto.execute().text 
 }
 
+/* 
+	11-jul-2018
+	Funcion que retorna el codigo disponible en el script groovy de 
+	entrada. Recibe en nombre del script con extension groovy
+*/
 def getShell(pScript){
 	GroovyShell shell = new GroovyShell()
 	return shell.parse(new File(pScript))

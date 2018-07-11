@@ -26,7 +26,7 @@ curl -s -k \
         -H "Authorization:bearer WyWmLRNB9wAedwIGexvc7yFHuGol-kcmDnkGTfxZwfc.16rW80TTOpg28cYnCqIGl66WoMplE7aI8U-iLYJmM6I" \
   -d '{"id":"incidencia","client_secret":"incidencia","scope":"hydra.incidencia",
 		"grant_types": [
-		    "client_credentials"
+		    "client_credentials", "authorization_code"
 		]
 	  }' \
   "https://hydra-hydraserver.192.168.99.104.nip.io/clients" 
@@ -86,5 +86,13 @@ curl -s -k -X POST \
         -d 'scope=hydra.consent' \
         -u "testing:consent-secret" \
         https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token
+---------------------dev-----------------
+
+
+curl -s -k \
+  -X DELETE \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer 4v8GCwwv1HuiPDi96Mh6rE9WnpWZbbQQxeQGG4bFTwE.SxmE5NZdU2TWubkVe2Sp5NW7iWe01gpfpB8Vl0FdaCI" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/8c7840cb-0e88-4b09-820f-a18715e463d3"
 
 
