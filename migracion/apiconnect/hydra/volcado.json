@@ -1,0 +1,24 @@
+{
+    "id": "8c7840cb-0e88-4b09-820f-a18715e463d3",
+    "client_secret": "oE0pC8xK1aP0hB5bA4vC5tO0yM5aX8nJ5cY2aE0oV0iQ3wB7eO",
+    "owner": "ISBAN MX",
+    "scope": "hydra.migration.replace",
+    "public": false,
+    "client_name": "ISBAN MX",
+    "redirect_uris": [
+        ""
+    ],
+    "grant_types": [
+        "authorization_code",
+        "client_credentials"
+    ],
+    "response_types": [
+        "code",
+        "token",
+        "id_token"
+    ],
+    "client_uri": "",
+    "contacts": [
+        "rmeneses@isban.mx"
+    ]
+}

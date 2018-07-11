@@ -1,17 +1,15 @@
 {
-  "owner": "brett.porter@axial.net",
-  "scope": "read replace update delete create",
+  "id": "replace",
+  "client_secret": "replace",
+  "owner": "ISBAN MX",
+  "scope": "hydra.migration.replace",
   "public": false,
-  "client_name": "incidencia",
+  "client_name": "ISBAN MX",
   "redirect_uris": [
-    "https://integration.axial.net/home",
-    "https://integration.axial.net/some/other/restricted/home"
+    ""
   ],
   "grant_types": [
-    "implicit",
-    "refresh_token",
     "authorization_code",
-    "password",
     "client_credentials"
   ],
   "response_types": [
@@ -19,8 +17,8 @@
     "token",
     "id_token"
   ],
-  "client_uri": "https://staging.axial.net/company/admin",
+  "client_uri": "",
   "contacts": [
-    "brett.porter@axial.net"
+    "rmeneses@isban.mx"
   ]
 }

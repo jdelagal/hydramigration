@@ -22,25 +22,51 @@ def addClientToHydra(paramArray){
 	//def hostHydra = 'hydra-hydraserver.192.168.99.104.nip.io'
 
 	def accessAdminToken =  getShell('getAccesAdminToken.groovy').getAccessAdminToken()
+	def sRet = escribeJSON(paramArray)
 
 	def cadenaAEjecutarAddClient = 
 						"""
-		curl -s -k -X POST \\
-		    -H "Content-Type: application/json" \\
-		    -H "Authorization:bearer $accessAdminToken" \\
-            -d '{ \\
-                 id: $id, \\
-                 client_secret:$client_secret, \\
-                 scope:hydra.$id, \\
-                 grant_types: [client_credentials, authorization_code] \\
-                }' \\   
-		    "https://$hostHydra/clients"
+	curl -s -k -X POST \\
+        -H \"Content-Type: application/json\" \\
+        -H \"Authorization: bearer $accessAdminToken\" \\
+        -d @volcado.json \\
+        https://hydra-hydraserver.192.168.99.104.nip.io/clients 
 						  """
+			
 	println cadenaAEjecutarAddClient
 	/*devolvemos un json con todos los clientes*/
     def jsonSlurper = new JsonSlurper()
 	def jsonAddClient = jsonSlurper.parseText(cadenaAEjecutarAddClient.execute().text)
 	return jsonAddClient
+}
+/* 
+	11-jul-2018
+	Funcion que escribe un fichero JSON que es la entrada del curl
+	Recibe un array con el clientID y secreto, devuelve OK si logro
+	escribir correctamente con el nombre del clientID
+*/
+def escribeJSON(def paramArray){
+	def jsonSlurper = new JsonSlurper()
+	def id = paramArray[0]
+	def client_secret = paramArray[1]
+	def clientFile=new File("client.json")
+
+	def objetoClient=jsonSlurper.parse(clientFile) 
+	if(objetoClient !=null){
+		if(objetoClient.id != null && objetoClient.client_secret != null){
+			objetoClient.id=paramArray[0]
+			objetoClient.client_secret=paramArray[1]
+			def clientID = objetoClient.id
+			def obJSON = new JsonBuilder(objetoClient).toPrettyString()
+			def target = new File("volcado.json")
+				target.withWriter { file ->
+					obJSON.eachLine { line ->
+						file.writeLine(line)
+					}
+			}	
+		}
+	}
+
 }
 
 /* 
