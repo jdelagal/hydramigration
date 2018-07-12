@@ -18,25 +18,29 @@ def addCredentials(paramArray){
 	//obtenemos todos los clientes de redis
 	
 	def allRedisClients =  getShell('getAllClientsFromRedis.groovy').getAllClientsFromRedis()
-	/*
-	for(i=0;i<allRedisClients.size;i++){
-		def client = allRedisClients[i];
-		def clientID = client.id
-		def clientSecret = client.client_secret
-		if(!allHydraClients.contains(clientID)){
-			def newParamArray = []
-			newParamArray.add(clientID)
-			newParamArray.add(clientSecret)
-			newParamArray.add(hostHydra)
-			println clientID
-			//def jsonAddClient =  getShell('addClient.groovy').addClientToHydra(newParamArray)
-		}else{
-			println "fuera"
-		}
-		
-	} 
-	*/
 
+	for(i=0;i<allRedisClients.size;i++){
+		def client = allRedisClients[i]
+		def jsonSlurper = new JsonSlurper()
+		def clientAdd = jsonSlurper.parseText(client)
+
+		def pFind = []
+		pFind.add(clientAdd.client.id)
+		pFind.add(hostHydra)
+		def findClientInsideHydra =  getShell('findClientInsideHydra.groovy').findClientInsideHydra(pFind)
+		if(findClientInsideHydra.message){
+			if(findClientInsideHydra.message.contains("Not found")){
+				def pAlta = []
+				pAlta.add(clientAdd.client.id)
+				pAlta.add(clientAdd.client.client_secret)
+				pAlta.add(hostHydra)
+				def altaRet =  getShell('addClient.groovy').addClientToHydra(pAlta)
+			}
+		}else{
+				println "ya existe"
+		}
+		println findClientInsideHydra
+	}
 }
 
 /* 

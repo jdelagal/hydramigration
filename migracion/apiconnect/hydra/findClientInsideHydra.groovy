@@ -33,7 +33,7 @@ def findClientInsideHydra(paramArray){
 	/*devolvemos un json con todos los clientes*/
     def jsonSlurper = new JsonSlurper()
 	def jsonAddClient = jsonSlurper.parseText(cadenaAEjecutarFindClient.execute().text)
-	return jsonAddClient.id
+	return jsonAddClient
 }
 
 /* 

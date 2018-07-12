@@ -25,7 +25,7 @@ for(i=0;i<credentials.length;i++){
 
 		def command = """
 			redis-cli \
-			hmset $clientID secretodev $clientSecret entorno dev
+			hmset $clientID secretodev $clientSecret
 			  		  """
 	 	//println command
 	 	command.execute().text

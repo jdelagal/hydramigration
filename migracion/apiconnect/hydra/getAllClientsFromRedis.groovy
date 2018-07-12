@@ -14,23 +14,30 @@ def getAllClientsFromRedis(){
 	keys *
 			  """
 	def cadenaClients =  command.execute().text
-	cadenaClients = cadenaClients.split("\\r")
+
+	def cadenaClientsPartida = cadenaClients.split("\r\n")
 	def cadenaClientsConSecreto = [];
 
-	for(i=0;i<cadenaClients.length;i++){
-		def client = cadenaClients[i];
-		def ret = buscaClientConSecreto(client)
-		if(ret.contains("1")){
-			def jsonClient = {}
+	for(i=0;i<cadenaClientsPartida.length ;i++){
+		def client = cadenaClientsPartida[i];
 
-			def secretoId = getSecreto(client)
-			jsonClient.id = client
-			jsonClient.client_secret = secretoId
-			//println jsonClient.id
-			//println jsonClient.client_secret
-			cadenaClientsConSecreto.add(jsonClient)	
-		}		
+		def ret = buscaClientConSecreto(client)
+
+		if(ret.contains("1") ){
+			String secretoId = getSecreto(client)
+			secretoId = secretoId.split("\r\n")[0]
+			def someMap = [
+				'id': client,
+				'client_secret': secretoId
+			]
+			def json = new groovy.json.JsonBuilder()
+			json client: someMap
+			def clientAdd =  groovy.json.JsonOutput.prettyPrint(json.toString())
+
+			cadenaClientsConSecreto.add(clientAdd)	
+		}
 	}
+    println cadenaClientsConSecreto
 	return cadenaClientsConSecreto
 }
 

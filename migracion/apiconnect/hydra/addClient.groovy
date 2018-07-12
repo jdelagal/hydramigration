@@ -38,6 +38,7 @@ def addClientToHydra(paramArray){
 	/*devolvemos un json con todos los clientes*/
     def jsonSlurper = new JsonSlurper()
 	def jsonAddClient = jsonSlurper.parseText(cadenaAEjecutarAddClient.execute().text)
+	boolean fileSuccessfullyDeleted =  new File("volcado.json").delete()  
 	return jsonAddClient
 }
 /* 
