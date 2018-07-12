@@ -3,6 +3,7 @@ import groovy.json.*
 println "INICIO GET ADD ONECLIENT"
 println args[0]
 println args[1]
+println args[2]
 
 def paramArray = []
 paramArray.add(args[0])
@@ -30,7 +31,7 @@ def addClientToHydra(paramArray){
         -H \"Content-Type: application/json\" \\
         -H \"Authorization: bearer $accessAdminToken\" \\
         -d @volcado.json \\
-        https://hydra-hydraserver.192.168.99.104.nip.io/clients 
+        https://$hostHydra/clients 
 						  """
 			
 	println cadenaAEjecutarAddClient

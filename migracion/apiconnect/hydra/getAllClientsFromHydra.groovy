@@ -28,9 +28,8 @@ def getAllClientsFromHydra(paramArray){
 						  """
 	println cadenaAEjecutarGetAllClients
 	/*devolvemos un json con todos los clientes*/
-    def jsonSlurper = new JsonSlurper()
-	def jsonAllClients = jsonSlurper.parseText(cadenaAEjecutarGetAllClients.execute().text)
-	return jsonAllClients
+
+	return cadenaAEjecutarGetAllClients.execute().text
 }
 
 /* 

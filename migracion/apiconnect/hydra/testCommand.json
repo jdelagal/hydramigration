@@ -92,9 +92,15 @@ curl -s -k -X POST \
 curl -s -k \
   -X DELETE \
   -H "Content-Type: application/json" \
-        -H "Authorization:bearer L9GT0zr3R4wTu6z2IQ6-yGgdDTGdXjCExqTD29JZsCA.GbPa6xWJI6T24dFT7Klzo7h5gDT0nl0eo2NvJ9G-_0w" \
-    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/a85a25c9-2d4b-4f6f-af48-8c5f960e73fb"
+        -H "Authorization:bearer JTB6ulaUqVpxw8v-Fl1loEpngYV-Jw10SenNGmv-mtg.5Mcn5nt17EG2Q9UUvcB_p08-apXYvQLD89_dUD4Y7T0" \
+    'https://hydra-hydraserver.192.168.99.104.nip.io/clients/\n8c7840cb-0e88-4b09-820f-a18715e463d3'
 
+curl -s -k -X GET \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    -H "Authorization:bearer JTB6ulaUqVpxw8v-Fl1loEpngYV-Jw10SenNGmv-mtg.5Mcn5nt17EG2Q9UUvcB_p08-apXYvQLD89_dUD4Y7T0" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/8c7840cb-0e88-4b09-820f-a18715e463d3"
 
 comandos: 
 groovy addClient.groovy 8c7840cb-0e88-4b09-820f-a18715e463d3 oE0pC8xK1aP0hB5bA4vC5tO0yM5aX8nJ5cY2aE0oV0iQ3wB7eO hydra-hydraserver.192.168.99.104.nip.io
+
+
