@@ -9,30 +9,31 @@ paramArray.add(args[2])
 paramArray.add(args[3])
 paramArray.add(args[4])
 
-def shellCredentials = getShell('addConsumers.groovy')
-def credentials  = shellCredentials.getCredentials(paramArray)
+def save(paramArray){
+	def shellCredentials = getShell('addConsumers.groovy')
+	def credentials  = shellCredentials.getCredentials(paramArray)
 
-for(i=0;i<credentials.length;i++){
-	def cred = credentials[i]
-	def jsonSlurper = new JsonSlurper()
-	def jsonCred = jsonSlurper.parseText(cred)
+	for(i=0;i<credentials.length;i++){
+		def cred = credentials[i]
+		def jsonSlurper = new JsonSlurper()
+		def jsonCred = jsonSlurper.parseText(cred)
 
-	if (jsonCred!=null){
-		def clientID = jsonCred.clientID
-		def clientSecret = jsonCred.clientSecret
+		if (jsonCred!=null){
+			def clientID = jsonCred.clientID
+			def clientSecret = jsonCred.clientSecret
 
-		println clientID
+			println clientID
 
-		def command = """
-			redis-cli \
-			hmset $clientID secretodev $clientSecret
-			  		  """
-	 	//println command
-	 	command.execute().text
-	}
-	
-} 
-
+			def command = """
+				redis-cli \
+				hmset $clientID secretodev $clientSecret
+						"""
+			//println command
+			command.execute().text
+		}
+		
+	} 
+}
 def getShell(pScript){
 	GroovyShell shell = new GroovyShell()
 	return shell.parse(new File(pScript))
