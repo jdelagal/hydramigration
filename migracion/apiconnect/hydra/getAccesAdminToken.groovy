@@ -23,7 +23,7 @@ def getAccessAdminToken(){
         -d scope=hydra \\
         https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token 
 						  """
-	println cadenaAEjecutarGetAccessAdminToken
+	//println cadenaAEjecutarGetAccessAdminToken
 	/*devolvemos el campo access token del json de salida*/
 	def jsonSlurper = new JsonSlurper()
 	def jsonAccessAdminToken = jsonSlurper.parseText(cadenaAEjecutarGetAccessAdminToken.execute().text)

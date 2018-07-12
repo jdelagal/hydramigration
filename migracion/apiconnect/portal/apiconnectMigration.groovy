@@ -11,7 +11,7 @@ paramArray.add(args[4])
 
 
 
-println migration(paramArray)
+migration(paramArray)
 
 def migration(paramArray){
 	def hostHydra = paramArray[0]

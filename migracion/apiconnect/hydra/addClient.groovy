@@ -34,7 +34,7 @@ def addClientToHydra(paramArray){
         https://$hostHydra/clients 
 						  """
 			
-	println cadenaAEjecutarAddClient
+	//println cadenaAEjecutarAddClient
 	/*devolvemos un json con todos los clientes*/
     def jsonSlurper = new JsonSlurper()
 	def jsonAddClient = jsonSlurper.parseText(cadenaAEjecutarAddClient.execute().text)

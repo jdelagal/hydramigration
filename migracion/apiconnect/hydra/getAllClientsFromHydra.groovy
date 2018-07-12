@@ -26,7 +26,7 @@ def getAllClientsFromHydra(paramArray){
 		    -H \"Authorization:bearer $accessAdminToken\" \\
 		    https://$hostHydra/clients
 						  """
-	println cadenaAEjecutarGetAllClients
+	//println cadenaAEjecutarGetAllClients
 	/*devolvemos un json con todos los clientes*/
 
 	return cadenaAEjecutarGetAllClients.execute().text
