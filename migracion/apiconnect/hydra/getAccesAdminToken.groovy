@@ -12,6 +12,7 @@ paramArray.add(args[0])
 def getAccessAdminToken(paramArray){
 	/*parametros de entrada*/
 	def hostHydra = paramArray[0]
+	//println "hostHydra "+hostHydra
 	def adminUser = 'admin'
 	def passwordAdminUser = 'admin-password'
 	def tokenautorization = (adminUser+':'+passwordAdminUser).bytes.encodeBase64().toString()

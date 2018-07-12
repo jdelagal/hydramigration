@@ -14,7 +14,7 @@ def addCredentials(paramArray){
 	//def hostHydra = 'hydra-hydraserver.192.168.99.104.nip.io'
 	
 	// obtenemos todos los clientes de hydra
-	def allHydraClients =  getShell('getAllClientsFromHydra.groovy').getAllClientsFromHydra(paramArray)
+	//def allHydraClients =  getShell('getAllClientsFromHydra.groovy').getAllClientsFromHydra(paramArray)
 	//obtenemos todos los clientes de redis
 	
 	def allRedisClients =  getShell('getAllClientsFromRedis.groovy').getAllClientsFromRedis()

@@ -297,3 +297,16 @@ https://github.com/cheddarwhizzy/hydra-poc
 8c7840cb-0e88-4b09-820f-a18715e463d3
 oE0pC8xK1aP0hB5bA4vC5tO0yM5aX8nJ5cY2aE0oV0iQ3wB7eO
  hydra-hydraserver.192.168.99.104.nip.io
+
+
+
+curl -s -k \
+  -X DELETE \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer uo5Izec_zZms-evRRm844DUu8wrXpZfy8Onvv6khmWQ.kxHu6I8H0_cJhLj97K9k_A4yQAfyPE6wCruZI9KzSvo" \
+    'https://hydra-hydraserver.192.168.99.104.nip.io/clients/8c7840cb-0e88-4b09-820f-a18715e463d3'
+
+curl -s -k -X GET \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    -H "Authorization:bearer uo5Izec_zZms-evRRm844DUu8wrXpZfy8Onvv6khmWQ.kxHu6I8H0_cJhLj97K9k_A4yQAfyPE6wCruZI9KzSvo" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/8c7840cb-0e88-4b09-820f-a18715e463d3"

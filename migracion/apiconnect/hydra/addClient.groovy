@@ -20,9 +20,12 @@ def addClientToHydra(paramArray){
 	def id = paramArray[0]
 	def client_secret = paramArray[1]
 	def hostHydra = paramArray[2]
+
+	def paramFind=[]
+	paramFind.add(hostHydra)
 	//def hostHydra = 'hydra-hydraserver.192.168.99.104.nip.io'
 
-	def accessAdminToken =  getShell('getAccesAdminToken.groovy').getAccessAdminToken()
+	def accessAdminToken =  getShell('getAccesAdminToken.groovy').getAccessAdminToken(paramFind)
 	def sRet = escribeJSON(paramArray)
 
 	def cadenaAEjecutarAddClient = 
