@@ -1,15 +1,17 @@
 import groovy.json.*
 
 println "INICIO GET ACCESSADMINTOKEN"
-
+def paramArray = []
+paramArray.add(args[0])
 //println getAccessAdminToken()
 /* 
 	11-jul-2018
 	Funcion que retorna el access token del usuario administrador
 	de Hydra Server
 */
-def getAccessAdminToken(){
+def getAccessAdminToken(paramArray){
 	/*parametros de entrada*/
+	def hostHydra = paramArray[0]
 	def adminUser = 'admin'
 	def passwordAdminUser = 'admin-password'
 	def tokenautorization = (adminUser+':'+passwordAdminUser).bytes.encodeBase64().toString()
@@ -21,7 +23,7 @@ def getAccessAdminToken(){
         -H \"Authorization: Basic $tokenautorization\" \\
         -d grant_type=client_credentials \\
         -d scope=hydra \\
-        https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token 
+        https://$hostHydra/oauth2/token 
 						  """
 	//println cadenaAEjecutarGetAccessAdminToken
 	/*devolvemos el campo access token del json de salida*/

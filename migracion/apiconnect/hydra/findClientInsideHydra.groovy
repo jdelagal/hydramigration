@@ -17,9 +17,11 @@ println findClientInsideHydra(paramArray)
 def findClientInsideHydra(paramArray){
 	def id = paramArray[0]
 	def hostHydra = paramArray[1]
+	def paramFind=[]
+	paramFind.add(hostHydra)
 	//def hostHydra = 'hydra-hydraserver.192.168.99.104.nip.io'
 
-	def accessAdminToken =  getShell('getAccesAdminToken.groovy').getAccessAdminToken()
+	def accessAdminToken =  getShell('getAccesAdminToken.groovy').getAccessAdminToken(paramFind)
 
 	def cadenaAEjecutarFindClient = 
 						"""

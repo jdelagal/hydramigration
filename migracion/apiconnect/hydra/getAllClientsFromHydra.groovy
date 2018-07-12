@@ -17,7 +17,7 @@ def getAllClientsFromHydra(paramArray){
 	def hostHydra = paramArray[0]
 	//def hostHydra = 'hydra-hydraserver.192.168.99.104.nip.io'
 
-	def accessAdminToken =  getShell('getAccesAdminToken.groovy').getAccessAdminToken()
+	def accessAdminToken =  getShell('getAccesAdminToken.groovy').getAccessAdminToken(paramArray)
 
 	def cadenaAEjecutarGetAllClients = 
 						"""
