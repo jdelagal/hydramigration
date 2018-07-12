@@ -36,11 +36,9 @@ def addCredentials(paramArray){
 				pAlta.add(hostHydra)
 				def altaRet =  getShell('addClient.groovy').addClientToHydra(pAlta)
 			}
-		}else{
-				println "ya existe"
 		}
-		println findClientInsideHydra
 	}
+	return "OK"
 }
 
 /* 

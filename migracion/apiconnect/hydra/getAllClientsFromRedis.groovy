@@ -37,7 +37,7 @@ def getAllClientsFromRedis(){
 			cadenaClientsConSecreto.add(clientAdd)	
 		}
 	}
-    println cadenaClientsConSecreto
+
 	return cadenaClientsConSecreto
 }
 
