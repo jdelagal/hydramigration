@@ -1,0 +1,24 @@
+{
+  "id": "replace",
+  "client_secret": "replace",
+  "owner": "ISBAN MX",
+  "scope": "hydra.migration",
+  "public": false,
+  "client_name": "ISBAN MX",
+  "redirect_uris": [
+    ""
+  ],
+  "grant_types": [
+    "authorization_code",
+    "client_credentials"
+  ],
+  "response_types": [
+    "code",
+    "token",
+    "id_token"
+  ],
+  "client_uri": "",
+  "contacts": [
+    "rmeneses@isban.mx"
+  ]
+}
