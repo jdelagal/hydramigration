@@ -22,7 +22,7 @@ function introspection() {
         headers: headersaccess,
         contentType: 'application/json',
         timeout: 60,
-        data: {"scope": "hydra", "grant_types":["client_credentials"]},
+        data: {"scope": "hydra", "grant_types":["client_credentials"]}
     };
     callAccessAdminTokenUrl(optionsgetaccess);
 }
@@ -41,6 +41,9 @@ function callAccessAdminTokenUrl(options){
         if (error){
             throw error ;
         } else {         
+                var access_token_request =  JSON.stringify(apic.getvariable('request.headers.authorization') ) ;
+                access_token_request = access_token_request.split(" ")[1].trim().split("\"")[0]
+                //dbglog.error("access_token_request: "+access_token_request);
                 var headerintrospect =
                 { "Content-Type": "application/json","Authorization": "bearer "+responseData.access_token}            
                 var optionsintrospection = {
@@ -50,15 +53,15 @@ function callAccessAdminTokenUrl(options){
                     headers: headerintrospect,
                     contentType: 'application/json',
                     timeout: 60,
-                    data: {"token": "Ltz8CQ3n2Fcp7RT0MCwDaPZ-9cUPcjMmi6o5l8YuFZY.GmEpUbR7PuHGCjMfBtECzZE4hn_7bAu6H_r23-anz5M"},
+                    data: {"token": access_token_request}
                 };
-                callIntrospection(responseData, optionsintrospection)
+                callIntrospection(optionsintrospection)
             }});		
         }
     });
 }
-function callIntrospection(responseDataParam, options){
-    dbglog.error("log del valor active: "+responseDataParam.access_token);
+function callIntrospection(options){
+
     urlopen.open(options, function(error, response) {
         if(error) {		
             session.output.write("urlopen error: "+JSON.stringify(error));
@@ -73,10 +76,10 @@ function callIntrospection(responseDataParam, options){
         if (error){
             throw error ;
             } else {
-                   dbglog.error("responseData: "+responseData);
                    if(responseData.active!==true){
-                        apic.error("name", 400, "Bad Request", "Access Token");      
+                        apic.error("name", 401, "Unauthorized", "Access Token");      
                    }else{
+                        //dbglog.error("responseData token: "+responseData.token);
                         dbglog.error("OK");  
                    }
                 }
