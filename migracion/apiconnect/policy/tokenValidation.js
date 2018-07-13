@@ -50,7 +50,7 @@ function callAccessAdminTokenUrl(options){
                     headers: headerintrospect,
                     contentType: 'application/json',
                     timeout: 60,
-                    data: {"scope": "hydra", "grant_types":["client_credentials"]},
+                    data: {"token": "Ltz8CQ3n2Fcp7RT0MCwDaPZ-9cUPcjMmi6o5l8YuFZY.GmEpUbR7PuHGCjMfBtECzZE4hn_7bAu6H_r23-anz5M"},
                 };
                 callIntrospection(responseData, optionsintrospection)
             }});		
@@ -69,47 +69,16 @@ function callIntrospection(responseDataParam, options){
             dbglog.error("Response status code: " + responseStatusCode);
             dbglog.error("Response reason: " + responseReason);
 
-            response.readAsBuffer(function(error, responseData){
+            response.readAsJSON(function(error, responseData){
         if (error){
             throw error ;
             } else {
-                    dbglog.error("responseData: "+responseData);
-                    session.output.write(responseData);
-                }
-            });		
-        }
-    });
-}
-
-function verifyToken(){
-    var headersload 
-    = { "Content-Type": "application/json","Authorization": "Basic YWRtaW46YWRtaW4tcGFzc3dvcmQ="} 
-    var options = {
-        target: "http://nodered:1880/introspection",
-        sslClientProfile : 'webapi-sslcli-mgmt',
-        method: 'post',
-        headers: headersload,
-        contentType: 'application/json',
-        timeout: 60,
-        data: {"scope": "hydra", "grant_types":["client_credentials"]},
-    };
-
-    urlopen.open(options, function(error, response) {
-        if(error) {		
-            session.output.write("urlopen error: "+JSON.stringify(error));
-        } else {
-            // get the response status code
-            var responseStatusCode = response.statusCode;
-            var responseReason = response.reason;
-            dbglog.error("Response status code: " + responseStatusCode);
-            dbglog.error("Response reason: " + responseReason);
-
-            response.readAsBuffer(function(error, responseData){
-        if (error){
-            throw error ;
-            } else {
-                    dbglog.error("responseData: "+responseData);
-                    session.output.write(responseData);
+                   dbglog.error("responseData: "+responseData);
+                   if(responseData.active!==true){
+                        apic.error("name", 400, "Bad Request", "Access Token");      
+                   }else{
+                        dbglog.error("OK");  
+                   }
                 }
             });		
         }
