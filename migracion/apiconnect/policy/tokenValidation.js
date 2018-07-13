@@ -16,7 +16,7 @@ function introspection() {
      { "Content-Type": "application/json","Authorization": "Basic "+bufferMessage} 
     //dbglog.error("headersload: "+JSON.stringify(headersload));
     var optionsgetaccess = {
-        target: "http://nodered:1880/access",
+        target: "http://nodered:1880/oauth2/token",
         sslClientProfile : 'webapi-sslcli-mgmt',
         method: 'get',
         headers: headersaccess,
@@ -30,7 +30,7 @@ function callAccessAdminTokenUrl(options){
     urlopen.open(options, function(error, response) {
         if(error) {		
             session.output.write("urlopen error: "+JSON.stringify(error));
-        }   else {
+        } else {
             // get the response status code
             var responseStatusCode = response.statusCode;
             var responseReason = response.reason;
@@ -40,16 +40,47 @@ function callAccessAdminTokenUrl(options){
         response.readAsJSON(function(error, responseData){
         if (error){
             throw error ;
-        } else {                   
-                processsAccessAdminToken(responseData)
+        } else {         
+                var headerintrospect =
+                { "Content-Type": "application/json","Authorization": "bearer "+responseData.access_token}            
+                var optionsintrospection = {
+                    target: "http://nodered:1880/oauth2/introspect",
+                    sslClientProfile : 'webapi-sslcli-mgmt',
+                    method: 'post',
+                    headers: headerintrospect,
+                    contentType: 'application/json',
+                    timeout: 60,
+                    data: {"scope": "hydra", "grant_types":["client_credentials"]},
+                };
+                callIntrospection(responseData, optionsintrospection)
             }});		
         }
     });
 }
-function processsAccessAdminToken(responseDataParam){
-    dbglog.error("log del valor active: "+responseDataParam.active);
+function callIntrospection(responseDataParam, options){
+    dbglog.error("log del valor active: "+responseDataParam.access_token);
+    urlopen.open(options, function(error, response) {
+        if(error) {		
+            session.output.write("urlopen error: "+JSON.stringify(error));
+        } else {
+            // get the response status code
+            var responseStatusCode = response.statusCode;
+            var responseReason = response.reason;
+            dbglog.error("Response status code: " + responseStatusCode);
+            dbglog.error("Response reason: " + responseReason);
 
+            response.readAsBuffer(function(error, responseData){
+        if (error){
+            throw error ;
+            } else {
+                    dbglog.error("responseData: "+responseData);
+                    session.output.write(responseData);
+                }
+            });		
+        }
+    });
 }
+
 function verifyToken(){
     var headersload 
     = { "Content-Type": "application/json","Authorization": "Basic YWRtaW46YWRtaW4tcGFzc3dvcmQ="} 
@@ -63,10 +94,10 @@ function verifyToken(){
         data: {"scope": "hydra", "grant_types":["client_credentials"]},
     };
 
-        urlopen.open(options, function(error, response) {
-            if(error) {		
-        session.output.write("urlopen error: "+JSON.stringify(error));
-        }   else {
+    urlopen.open(options, function(error, response) {
+        if(error) {		
+            session.output.write("urlopen error: "+JSON.stringify(error));
+        } else {
             // get the response status code
             var responseStatusCode = response.statusCode;
             var responseReason = response.reason;
