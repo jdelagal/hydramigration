@@ -3,9 +3,9 @@ var urlopen = require('urlopen');
 var access_token = "";
 const dbglog = console.options({'category':'apiconnect'});
 
-dbglog.error(getAccesAdminToken());
+introspection();
 
-function getAccesAdminToken() {
+function introspection() {
     var adminUser = 'admin';
     var passwordAdminUser = 'admin-password'; 
     var tokenautorization = (adminUser+':'+passwordAdminUser);
@@ -24,29 +24,31 @@ function getAccesAdminToken() {
         timeout: 60,
         data: {"scope": "hydra", "grant_types":["client_credentials"]},
     };
-    urlopen.open(optionsgetaccess, function(error, response) {
-            if(error) {		
-                session.output.write("urlopen error: "+JSON.stringify(error));
-            }   else {
-                // get the response status code
-                var responseStatusCode = response.statusCode;
-                var responseReason = response.reason;
-                dbglog.error("Response status code: " + responseStatusCode);
-                dbglog.error("Response reason: " + responseReason);
+    callAccessAdminTokenUrl(optionsgetaccess);
+}
+function callAccessAdminTokenUrl(options){
+    urlopen.open(options, function(error, response) {
+        if(error) {		
+            session.output.write("urlopen error: "+JSON.stringify(error));
+        }   else {
+            // get the response status code
+            var responseStatusCode = response.statusCode;
+            var responseReason = response.reason;
+            dbglog.error("Response status code: " + responseStatusCode);
+            dbglog.error("Response reason: " + responseReason);
 
-            response.readAsBuffer(function(error, responseData){
+        response.readAsBuffer(function(error, responseData){
         if (error){
             throw error ;
         } else {
+                    dbglog.error("tipo: "+typeof(responseData));
                     dbglog.error("log del valor active: "+responseData);
                     //session.output.write(responseData);
-                    return responseData
                 }
             });		
-        }
+            }
     });
 }
-
 function verifyToken(){
     var headersload 
     = { "Content-Type": "application/json","Authorization": "Basic YWRtaW46YWRtaW4tcGFzc3dvcmQ="} 
