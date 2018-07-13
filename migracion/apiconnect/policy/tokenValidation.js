@@ -37,17 +37,18 @@ function callAccessAdminTokenUrl(options){
             dbglog.error("Response status code: " + responseStatusCode);
             dbglog.error("Response reason: " + responseReason);
 
-        response.readAsBuffer(function(error, responseData){
+        response.readAsJSON(function(error, responseData){
         if (error){
             throw error ;
-        } else {
-                    dbglog.error("tipo: "+typeof(responseData));
-                    dbglog.error("log del valor active: "+responseData);
-                    //session.output.write(responseData);
-                }
-            });		
-            }
+        } else {                   
+                processsAccessAdminToken(responseData)
+            }});		
+        }
     });
+}
+function processsAccessAdminToken(responseDataParam){
+    dbglog.error("log del valor active: "+responseDataParam.active);
+
 }
 function verifyToken(){
     var headersload 
