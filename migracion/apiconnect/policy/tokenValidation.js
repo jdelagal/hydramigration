@@ -2,21 +2,24 @@ var apic = require('local:isp/policy/apim.custom.js');
 var urlopen = require('urlopen');
 var access_token = "";
 const dbglog = console.options({'category':'apiconnect'});
+var props = apic.getPolicyProperty();
+var hydra = props.hydra
+dbglog.error("props.hydra: "+props.hydra);
+introspection(hydra);
 
-introspection();
-
-function introspection() {
+function introspection(hydra) {
     var adminUser = 'admin';
     var passwordAdminUser = 'admin-password'; 
     var tokenautorization = (adminUser+':'+passwordAdminUser);
 
     var bufferMessage = new Buffer(tokenautorization).toString('base64');
-    
+    dbglog.error("host: "+hydra);
     var headersaccess =
      { "Content-Type": "application/json","Authorization": "Basic "+bufferMessage} 
     //dbglog.error("headersload: "+JSON.stringify(headersload));
+    var target_token= "http://"+hydra+"/oauth2/token";
     var optionsgetaccess = {
-        target: "http://nodered:1880/oauth2/token",
+        target: target_token,
         sslClientProfile : 'webapi-sslcli-mgmt',
         method: 'get',
         headers: headersaccess,
@@ -46,8 +49,9 @@ function callAccessAdminTokenUrl(options){
                 //dbglog.error("access_token_request: "+access_token_request);
                 var headerintrospect =
                 { "Content-Type": "application/json","Authorization": "bearer "+responseData.access_token}            
+                var target_introspect= "http://"+hydra+"/oauth2/introspect";
                 var optionsintrospection = {
-                    target: "http://nodered:1880/oauth2/introspect",
+                    target: target_introspect,
                     sslClientProfile : 'webapi-sslcli-mgmt',
                     method: 'post',
                     headers: headerintrospect,
