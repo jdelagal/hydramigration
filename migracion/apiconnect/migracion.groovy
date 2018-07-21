@@ -7,7 +7,7 @@ paramArray.add(args[0])
 println migration(paramArray)
 
 def migration(paramArray){
-    def migration =  getShell('hydra/hydraMigration.groovy').migration(paramArray)
+    def migration =  getShell('hydraMigration.groovy').migration(paramArray)
 }
 
 
@@ -22,5 +22,5 @@ println "FIN MIGRATION"
 */
 def getShell(pScript){
 	GroovyShell shell = new GroovyShell()
-	return shell.parse(new File(pScript))
+	return shell.parse(new File('hydra/'+pScript))
 }
