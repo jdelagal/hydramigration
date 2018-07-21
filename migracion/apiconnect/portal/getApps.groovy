@@ -33,7 +33,7 @@ String[] getIdApps(paramArray){
 	def sRet = []
 	
 	GroovyShell shell = new GroovyShell()
-	def getOrgs = shell.parse(new File('getOrgs.groovy'))
+	def getOrgs = shell.parse(new File('portal/getOrgs.groovy'))
 	def idConsumerOrg = getOrgs.getIdConsumerOrg(paramArray)
 
 

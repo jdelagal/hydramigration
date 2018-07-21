@@ -37,7 +37,7 @@ String getIdConsumerOrg(paramArray){
 				-H \"X-IBM-APIManagement-Context: $contextOrgProvider\" \\ 
 				-X GET  https://$hostManager/v1/portal/orgs
 						  """
-
+	//println cadenaAEjecutarOrgs
 	def jsonSlurper = new JsonSlurper()
 	def jsonOrgs = jsonSlurper.parseText(cadenaAEjecutarOrgs.execute().text)
 		/*buscamos el id de nuestra organizacion*/

@@ -49,7 +49,7 @@ String[] getCredentials(paramArray){
 
 def getShell(pScript){
 	GroovyShell shell = new GroovyShell()
-	return shell.parse(new File(pScript))
+	return shell.parse(new File('portal/'+pScript))
 }
 
 def addConsumer(appId, idConsumerOrg, tokenautorization, paramArray){
@@ -71,10 +71,10 @@ def addConsumer(appId, idConsumerOrg, tokenautorization, paramArray){
 			-H "Content-Type: application/json" \
 			-H "Authorization:Basic $tokenautorization" \
 			-H "X-IBM-APIManagement-Context: $contextOrgProvider" \
-			-d @clientSecretTrue.json \
+			-d @portal/clientSecretTrue.json \
 			https://$hostManager/v1/portal/orgs/$idConsumerOrg/apps/$appId/credentials/reset
 				 """
-					  
+	//println command				  
 	def jsonSlurper = new JsonSlurper()
 	return command.execute().text
 }
