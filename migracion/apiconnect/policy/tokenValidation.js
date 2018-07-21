@@ -126,7 +126,7 @@ function findClient(optionsGetClientID, optionsGetBufferMessageClientID,
             var responseReason = response.reason;
             dbglog.error("Response status code: " + responseStatusCode);
             dbglog.error("Response reason: " + responseReason);
-
+            //dbglog.error("optionsGetClientID.target: "+optionsGetClientID.target);
             response.readAsJSON(function(error, responseData){
         if (error){
             throw error ;
