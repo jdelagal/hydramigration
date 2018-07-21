@@ -5,12 +5,14 @@ println args[0]
 
 def paramArray = []
 paramArray.add(args[0])
+paramArray.add(args[1])
 
 
 println addCredentials(paramArray)
 
 def addCredentials(paramArray){
 	def hostHydra = paramArray[0]
+	def mode = paramArray[1]
 	//def hostHydra = 'hydra-hydraserver.192.168.99.104.nip.io'
 	
 	// obtenemos todos los clientes de hydra
@@ -34,6 +36,7 @@ def addCredentials(paramArray){
 				pAlta.add(clientAdd.client.id)
 				pAlta.add(clientAdd.client.client_secret)
 				pAlta.add(hostHydra)
+				pAlta.add(mode)
 				def altaRet =  getShell('addClient.groovy').addClientToHydra(pAlta)
 			}
 		}

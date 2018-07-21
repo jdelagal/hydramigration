@@ -4,7 +4,8 @@ var access_token = "";
 const dbglog = console.options({'category':'apiconnect'});
 var props = apic.getPolicyProperty();
 var hydra = props.hydra
-dbglog.error("props.hydra: "+props.hydra);
+var keycloak = props.keycloak
+//dbglog.error("props.hydra: "+props.hydra);
 introspection(hydra);
 
 function introspection(hydra) {
@@ -14,7 +15,7 @@ function introspection(hydra) {
     //ofuscamos el clientID
     var ofusquedClientID = "code:"+clientID;
     var bufferMessageClientID = new Buffer(ofusquedClientID).toString('base64');
-    dbglog.error("bufferMessageClientID: "+bufferMessageClientID);
+    //dbglog.error("bufferMessageClientID: "+bufferMessageClientID);
 
     var adminUser = 'admin';
     var passwordAdminUser = 'admin-password'; 
@@ -35,9 +36,9 @@ function introspection(hydra) {
         timeout: 60,
         data: {"scope": "hydra", "grant_types":["client_credentials", "authorization_code"]}
     };
-    callAccessAdminTokenUrl(optionsgetaccess);
+    callAccessAdminTokenUrl(optionsgetaccess, clientID, ofusquedClientID);
 }
-function callAccessAdminTokenUrl(options){
+function callAccessAdminTokenUrl(options, clientID, ofusquedClientID){
     urlopen.open(options, function(error, response) {
         if(error) {		
             session.output.write("urlopen error: "+JSON.stringify(error));
@@ -56,8 +57,35 @@ function callAccessAdminTokenUrl(options){
                 access_token_request = access_token_request.split(" ")[1].split("\"")[0]
                 //dbglog.error("access_token_request: "+access_token_request);
                 var headerintrospect =
-                { "Content-Type": "application/json","Authorization": "bearer "+responseData.access_token}            
+                { "Content-Type": "application/json","Authorization": "bearer "+responseData.access_token} ;
+
+                var headerintrospectKeycloak =
+                { "Content-Type": "application/x-www-form-urlencoded"} ; 
+
                 var target_introspect= "http://"+hydra+"/oauth2/introspect";
+                var target_getClientID = "http://"+hydra+"/clients/"+clientID;
+                var target_getBufferMessageClientID = "https://"+keycloak+"/clients/"+ofusquedClientID;
+
+                var optionsGetClientID = {
+                    target: target_getClientID,
+                    sslClientProfile : 'webapi-sslcli-mgmt',
+                    method: 'get',
+                    headers: headerintrospect,
+                    contentType: 'application/json',
+                    timeout: 60,
+                    data: {}
+                };
+
+                var optionsGetBufferMessageClientID = {
+                    target: target_getBufferMessageClientID,
+                    sslClientProfile : 'webapi-sslcli-mgmt',
+                    method: 'get',
+                    headers: headerintrospect,
+                    contentType: 'application/json',
+                    timeout: 60,
+                    data: {}
+                };
+
                 var optionsintrospection = {
                     target: target_introspect,
                     sslClientProfile : 'webapi-sslcli-mgmt',
@@ -67,11 +95,82 @@ function callAccessAdminTokenUrl(options){
                     timeout: 60,
                     data: {"token": access_token_request}
                 };
-                callIntrospection(optionsintrospection)
+
+                var optionsintrospectionKeycloak = {
+                    target: target_introspect,
+                    sslClientProfile : 'webapi-sslcli-mgmt',
+                    method: 'post',
+                    headers: headerintrospect,
+                    contentType: 'application/json',
+                    timeout: 60,
+                    data: {"token": access_token_request}
+                };
+
+                findClient(optionsGetClientID, optionsGetBufferMessageClientID, 
+                                    optionsintrospection, optionsintrospectionKeycloak);
+                
             }});		
         }
     });
 }
+
+function findClient(optionsGetClientID, optionsGetBufferMessageClientID, 
+                                    optionsintrospection, optionsintrospectionKeycloak){
+
+    urlopen.open(optionsGetClientID, function(error, response) {
+        if(error) {		
+            session.output.write("urlopen error: "+JSON.stringify(error));
+        } else {
+            // get the response status code
+            var responseStatusCode = response.statusCode;
+            var responseReason = response.reason;
+            dbglog.error("Response status code: " + responseStatusCode);
+            dbglog.error("Response reason: " + responseReason);
+
+            response.readAsJSON(function(error, responseData){
+        if (error){
+            throw error ;
+            } else {
+                   if(responseStatusCode!==200){
+                        findClientKeycloak(optionsGetBufferMessageClientID, optionsintrospectionKeycloak);     
+                   }else{
+                        //dbglog.error("responseData token: "+responseData.token);
+                        callIntrospection(optionsintrospection);
+                   }
+                }
+            });		
+        }
+    });
+}
+
+function findClientKeycloak(optionsGetBufferMessageClientID, optionsintrospectionKeycloak){
+
+    urlopen.open(optionsGetClientID, function(error, response) {
+        if(error) {		
+            session.output.write("urlopen error: "+JSON.stringify(error));
+        } else {
+            // get the response status code
+            var responseStatusCode = response.statusCode;
+            var responseReason = response.reason;
+            dbglog.error("Response status code: " + responseStatusCode);
+            dbglog.error("Response reason: " + responseReason);
+
+            response.readAsJSON(function(error, responseData){
+        if (error){
+            throw error ;
+            } else {
+                   if(responseStatusCode===200){
+                        //dbglog.error("responseData token: "+responseData.token);
+                        dbglog.error("OK");   
+                   }else{
+                        apic.error("name", 401, "Unauthorized", "Access Token");  
+                   }
+                }
+            });		
+        }
+    });
+}
+
 function callIntrospection(options){
 
     urlopen.open(options, function(error, response) {

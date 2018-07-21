@@ -5,6 +5,7 @@ println args[0]
 
 def paramArray = []
 paramArray.add(args[0])
+paramArray.add(args[1])
 
 
 println migration(paramArray)

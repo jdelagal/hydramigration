@@ -20,6 +20,7 @@ def addClientToHydra(paramArray){
 	def id = paramArray[0]
 	def client_secret = paramArray[1]
 	def hostHydra = paramArray[2]
+	def mode = paramArray[3]
 
 	def paramFind=[]
 	paramFind.add(hostHydra)
@@ -54,6 +55,8 @@ def escribeJSON(def paramArray){
 	def jsonSlurper = new JsonSlurper()
 	def id = paramArray[0]
 	def client_secret = paramArray[1]
+	def mode = paramArray[3]
+
 	def clientFile=new File("hydra/client.json")
 
 	def objetoClient=jsonSlurper.parse(clientFile) 
@@ -61,6 +64,9 @@ def escribeJSON(def paramArray){
 		if(objetoClient.id != null && objetoClient.client_secret != null){
 			objetoClient.id=paramArray[0]
 			objetoClient.client_secret=paramArray[1]
+			if('code'.equals(paramArray[3]) ){
+				objetoClient.owner = paramArray[1]
+			}
 			def clientID = objetoClient.id
 			def obJSON = new JsonBuilder(objetoClient).toPrettyString()
 			def target = new File("hydra/volcado.json")

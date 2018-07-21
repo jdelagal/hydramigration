@@ -480,3 +480,9 @@ keycloaktesting
 Client ID: Iv1.e070067e92b6b81a
 
 Client secret: d6901f897bfb87e2ca0e3c0ad5bfb008a5c747e2
+
+    curl -s -k \
+  -X DELETE \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer pAqfkwp073X0eu1vigay2hwGOjqcaYtS6NivBP2QXjk.95Iqg4gvRkvz2-0HBvWrU9YYKN0RXx9hA9erBaRllIQ" \
+    "https://hydra-hydraserver.192.168.99.104.nip.io/clients/8c87ef48-ce96-46c5-af9b-e806af1bfb97"
