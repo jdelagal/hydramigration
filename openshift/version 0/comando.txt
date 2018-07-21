@@ -149,6 +149,13 @@ curl -k -v -X PUT \
  
  groovy saveCredentials.groovy jdelagal@gmail.com \!n0r1t5@C apim factoriaustglobal.sb myorganization
  groovy addCredentials.groovy hydra-hydraserver.192.168.99.104.nip.io
+
+         curl -s -k -X POST \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -H "Authorization: Basic YWRtaW46YWRtaW4tcGFzc3dvcmQ=" \
+        -d grant_type=client_credentials \
+        -d scope=hydra \
+        https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token
  
  groovy getOrgs.groovy jdelagal@gmail.com \!n0r1t5@C apim factoriaustglobal.sb myorganization
 
@@ -310,3 +317,164 @@ curl -s -k -X GET \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H "Authorization:bearer uo5Izec_zZms-evRRm844DUu8wrXpZfy8Onvv6khmWQ.kxHu6I8H0_cJhLj97K9k_A4yQAfyPE6wCruZI9KzSvo" \
     "https://hydra-hydraserver.192.168.99.104.nip.io/clients/8c7840cb-0e88-4b09-820f-a18715e463d3"
+
+-------------------------admin------------------------------------------------------------------
+
+docker run --rm -it \
+  --network hydraguide \
+  oryd/hydra:v1.0.0-beta.3 \
+  clients create \
+    --endpoint https://hydra-hydraserver.192.168.99.104.nip.io \
+    --id another-consumer \
+    --secret consumer-secret \
+    -g authorization_code,refresh_token \
+    -r token,code,id_token \
+    --scope openid,offline \
+    --callbacks http://127.0.0.1:9010/callback
+
+
+  hydra clients create --skip-tls-verify \
+    --id another-consumer \
+    --secret consumer-secret \
+    -g authorization_code,refresh_token \
+    -r token,code,id_token \
+    --scope openid,offline \
+    --callbacks http://127.0.0.1:9010/callback
+
+  hydra connect --url https://hydra-hydraserver.192.168.99.104.nip.io/ --id admin --secret admin-password
+
+
+  hydra clients create --skip-tls-verify \
+  --id test_code \
+  --secret test_code  \
+  --name "Consent App Client" \
+  --grant-types client_credentials \
+  --response-types token,code,id_token \
+  --allowed-scopes hydra.consent \
+  --callbacks http://127.0.0.1:9010/callback
+
+  hydra token user \
+    --client-id test_code \
+    --client-secret test_code \
+    --scope openid,offline \
+    --redirect http://127.0.0.1:9010/callback
+
+  hydra clients create --skip-tls-verify \
+  --id admin \
+  --secret admin-password  \
+  --name "Consent App Client" \
+  --grant-types client_credentials \
+  --response-types token,code,id_token \
+  --allowed-scopes hydra.consent \
+  --callbacks http://127.0.0.1:9010/callback
+
+curl -s -k \
+  -X DELETE \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer x4RkHeM_7GWCnHCWT2WL2qqgJkPCC7PTh9u2s5RYjYw.GqhzxFwWKLi-8sU1qyrzwQ3juzKg3XqozjVqBdMysU0" \
+    'https://hydra-hydraserver.192.168.99.104.nip.io/clients/test_consent'
+
+hydra clients create --skip-tls-verify \
+ --id some-consumer \
+ --secret consumer-secret \
+ -g authorization_code,refresh_token,client_credentials \
+ -r token,code,id_token \
+ --allowed-scopes openid,offline,hydra.clients \
+ --callbacks https://consent-hydraserver.192.168.99.104.nip.io/callback
+ 
+hydra token user --skip-tls-verify \
+ --id some-consumer \
+ --secret consumer-secret \
+ --scopes openid,offline,hydra.clients \
+ --redirect https://consent-hydraserver.192.168.99.104.nip.io/callback
+
+https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/consent/requests/id
+
+ https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/auth?client_id=admin&redirect_uri=http%3A%2F%2Flocalhost%3A4445%2Fcallback&response_type=code&scope=hydra+offline+openid&state=auzuvuaykkmmboatgkakzlxo&nonce=ljkfhstxcrhgglvmltupezvm
+
+ URL AUTH CODE:
+ - https://www.ory.sh/docs/guides/latest/hydra/1-tutorial/
+ - https://www.ory.sh/run-oauth2-server-open-source-api-security/
+ - https://www.ibm.com/developerworks/library/se-bootstrap-hydra-oauth2/index.html
+ - https://hydra13.docs.apiary.io/#reference/oauth2/oauth2auth/the-oauth-2.0-authorize-endpoint
+ - https://medium.com/@robert.broeckelmann/openid-connect-authorization-code-flow-with-red-hat-sso-d141dde4ed3f
+ - https://github.com/keycloak/keycloak/tree/master/examples/ldap
+ - https://www.keycloak.org/docs-api/2.5/rest-api/index.html
+ - https://www.ibm.com/support/knowledgecenter/SSZFB2_3.0.1/com.ibm.apimgmt.apirest.doc/rest_apis.html
+ - http://www.mastertheboss.com/jboss-server/jboss-security/ldap-and-wildfly-part-2-using-keycloak
+ - https://github.com/minishift/minishift/issues/1615
+ - https://www.keycloak.org/docs-api/3.0/rest-api/index.html#_clients_resource
+ - https://hub.docker.com/r/jetski/admin-passwordcheds-docker/
+ - http://www.userbooster.de/en/support/feature-articles/openldap-for-windows-installation.aspx
+ - http://www.ldapbrowserwindows.com/
+ - https://www.ibm.com/support/knowledgecenter/en/SSFS6T/com.ibm.apic.apirest.doc/user_management_apis.html
+ - https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/client-registration/client-registration-cli.adoc
+
+ ojo con https://hub.docker.com/r/oryd/hydra-login-consent-node/
+
+     hydra clients create \
+    --endpoint https://hydra-hydraserver.192.168.99.104.nip.io \
+    --id auth-code-client \
+    --secret secret \
+    --grant-types authorization_code,refresh_token \
+    --response-types code,id_token \
+    --scope openid,offline \
+    --callbacks https://consent-hydraserver.192.168.99.104.nip.io/callback
+  
+  hydra connect --url https://hydra-hydraserver.192.168.99.104.nip.io/ --id admin --secret admin-password
+
+  hydra token user --auth-url https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/auth --token-url https://hydra-hydraserver.192.168.99.104.nip.io/oauth2/token  
+
+curl -s -k \
+  -X DELETE \
+  -H "Content-Type: application/json" \
+        -H "Authorization:bearer 6qNXF8a7WCNAloOyoRC-24LISY6MHzx_7yGg48_G1Iw.pWAMy069y6-ZIxN-tdII7AGh2b5ol2-t9mB-K7RkAsI" \
+    'https://hydra-hydraserver.192.168.99.104.nip.io/clients/test_consent'
+
+----------------KEYCLOAK---------------------------------------------------
+curl -X POST \
+  http://keycloak-test.192.168.99.104.nip.io/auth/realms/master/protocol/openid-connect/token \
+  -H 'accept-language: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'grant_type=password&username=6TQMR21Q&password=x77Aonjh&client_id=admin-cli'
+
+initail token
+eyJhbGciOiJSUzI1NiIsImtpZCIgOiAiOExBcTVHaEN4LW9pb0dQbHpfRnZncGRMaW83UGRpNEpOYVBwT2xmdmtjZyJ9.eyJqdGkiOiJiZGJlZWJhZC1lYTU1LTRiMzMtOWU5Ny1lYjE1NzhhYTU4ZmEiLCJleHAiOjE1MzcwMzM4MDgsIm5iZiI6MCwiaWF0IjoxNTMxODQ5ODA4LCJpc3MiOiJodHRwOi8va2V5Y2xvYWstdGVzdC4xOTIuMTY4Ljk5LjEwNC5uaXAuaW8vYXV0aC9yZWFsbXMvb2lkY3NlcnZlciIsImF1ZCI6Imh0dHA6Ly9rZXljbG9hay10ZXN0LjE5Mi4xNjguOTkuMTA0Lm5pcC5pby9hdXRoL3JlYWxtcy9vaWRjc2VydmVyIiwidHlwIjoiSW5pdGlhbEFjY2Vzc1Rva2VuIn0.eduBLT0bUvSaOZOXRkcrjl36ZjyVZ5W-VtFI6gIV3NNMFtc-N_1kPuu251HuvtTVub-k6GQx8hdiU3BQKuLPD5kH8Pd4q6dfZ6Tz-k4AwrMQD3o3UyKZ37reMqAga6C3KQDo3esJFFwolBaEdnHxddiHwP06cFFiaYdPwPLSYbAKOJVdKF8LpzLQvPA67DjYvtioVNv4g02SIFJMmeIJ0xhPI608Jmh_tOhV-kZYSfga-lvBwr2E-HVZSaBPwW525178GL6By2s2sz1a9f32yHxMyUASFpY_Ila26ROZZdrvyCZgl3Ez_cbEqdcpbpCyXc3C328yXn5kSYvB-W5JUA
+
+curl -X POST \
+    -d '{ "clientId": "myclient" }' \
+    -H "Content-Type:application/json" \
+    -H "Authorization: bearer eyJhbGciOiJSUzI1NiIsImtpZCIgOiAiOExBcTVHaEN4LW9pb0dQbHpfRnZncGRMaW83UGRpNEpOYVBwT2xmdmtjZyJ9.eyJqdGkiOiJiZGJlZWJhZC1lYTU1LTRiMzMtOWU5Ny1lYjE1NzhhYTU4ZmEiLCJleHAiOjE1MzcwMzM4MDgsIm5iZiI6MCwiaWF0IjoxNTMxODQ5ODA4LCJpc3MiOiJodHRwOi8va2V5Y2xvYWstdGVzdC4xOTIuMTY4Ljk5LjEwNC5uaXAuaW8vYXV0aC9yZWFsbXMvb2lkY3NlcnZlciIsImF1ZCI6Imh0dHA6Ly9rZXljbG9hay10ZXN0LjE5Mi4xNjguOTkuMTA0Lm5pcC5pby9hdXRoL3JlYWxtcy9vaWRjc2VydmVyIiwidHlwIjoiSW5pdGlhbEFjY2Vzc1Rva2VuIn0.eduBLT0bUvSaOZOXRkcrjl36ZjyVZ5W-VtFI6gIV3NNMFtc-N_1kPuu251HuvtTVub-k6GQx8hdiU3BQKuLPD5kH8Pd4q6dfZ6Tz-k4AwrMQD3o3UyKZ37reMqAga6C3KQDo3esJFFwolBaEdnHxddiHwP06cFFiaYdPwPLSYbAKOJVdKF8LpzLQvPA67DjYvtioVNv4g02SIFJMmeIJ0xhPI608Jmh_tOhV-kZYSfga-lvBwr2E-HVZSaBPwW525178GL6By2s2sz1a9f32yHxMyUASFpY_Ila26ROZZdrvyCZgl3Ez_cbEqdcpbpCyXc3C328yXn5kSYvB-W5JUA" \
+    http://keycloak-test.192.168.99.104.nip.io/auth/realms/master/clients-registrations/default
+
+https://blog.zhaw.ch/icclab/the-intricacies-of-running-containers-on-openshift/
+http://widerin.net/blog/official-grafana-docker-image-on-openshift/
+https://opensource.com/article/18/3/just-say-no-root-containers
+
+auth code
+8a75d708-74c5-4723-be67-88d0f0c224ca / c7372cba-b8fa-42dd-ba52-64928d742644
+
+curl GET https://secure-keycloak-test.192.168.99.104.nip.io/auth/realms/authcode/protocol/openid-connect/auth?state=1ab88681-705f-4022-9b62-6749fbdd9f09&response_type=code&client_id=8a75d708-74c5-4723-be67-88d0f0c224ca&redirect_uri=https://oauth2-debug-test.192.168.99.104.nip.io/callback&scope=openid profile Owner
+
+curl -X GET "https://secure-keycloak-test.192.168.99.104.nip.io/auth/realms/authcode/protocol/openid-connect/auth?client_id=8a75d708-74c5-4723-be67-88d0f0c224ca&response_type=code&scope=openid%20profile%20email&state=uuidgen&redirect_uri=https://oauth2-debug-test.192.168.99.104.nip.io/callback" --insecure -D headers.out
+
+RESULTADO:
+
+probar script de https://medium.com/@robert.broeckelmann/openid-connect-authorization-code-flow-with-red-hat-sso-d141dde4ed3f
+
+192.168.99.102 10389
+
+uid=admin, ou=system secret
+
+ldapmodify  -v -h localhost:10389 -c -x -D uid=admin,ou=system -w secret -f debian.ldif
+
+LdapSoftTest-SSL
+ldapclient.com 636 SSL
+
+http://www.mastertheboss.com/jboss-server/jboss-security/ldap-and-wildfly-part-2-using-keycloak
+
+keycloaktesting
+Client ID: Iv1.e070067e92b6b81a
+
+Client secret: d6901f897bfb87e2ca0e3c0ad5bfb008a5c747e2

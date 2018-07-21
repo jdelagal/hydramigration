@@ -48,7 +48,7 @@ def addCredentials(paramArray){
 */
 def getShell(pScript){
 	GroovyShell shell = new GroovyShell()
-	return shell.parse(new File(pScript))
+	return shell.parse(new File('hydra/'+pScript))
 }
 
 

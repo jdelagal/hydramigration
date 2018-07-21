@@ -33,7 +33,7 @@ def addClientToHydra(paramArray){
 	curl -s -k -X POST \\
         -H \"Content-Type: application/json\" \\
         -H \"Authorization: bearer $accessAdminToken\" \\
-        -d @volcado.json \\
+        -d @hydra/volcado.json \\
         https://$hostHydra/clients 
 						  """
 			
@@ -41,7 +41,7 @@ def addClientToHydra(paramArray){
 	/*devolvemos un json con todos los clientes*/
     def jsonSlurper = new JsonSlurper()
 	def jsonAddClient = jsonSlurper.parseText(cadenaAEjecutarAddClient.execute().text)
-	boolean fileSuccessfullyDeleted =  new File("volcado.json").delete()  
+	boolean fileSuccessfullyDeleted =  new File("hydra/volcado.json").delete()  
 	return jsonAddClient
 }
 /* 
@@ -54,7 +54,7 @@ def escribeJSON(def paramArray){
 	def jsonSlurper = new JsonSlurper()
 	def id = paramArray[0]
 	def client_secret = paramArray[1]
-	def clientFile=new File("client.json")
+	def clientFile=new File("hydra/client.json")
 
 	def objetoClient=jsonSlurper.parse(clientFile) 
 	if(objetoClient !=null){
@@ -63,7 +63,7 @@ def escribeJSON(def paramArray){
 			objetoClient.client_secret=paramArray[1]
 			def clientID = objetoClient.id
 			def obJSON = new JsonBuilder(objetoClient).toPrettyString()
-			def target = new File("volcado.json")
+			def target = new File("hydra/volcado.json")
 				target.withWriter { file ->
 					obJSON.eachLine { line ->
 						file.writeLine(line)
@@ -82,7 +82,7 @@ def escribeJSON(def paramArray){
 def getShell(pScript){
 	GroovyShell shell = new GroovyShell()
 	/*parsea el codigo del script parseado*/
-	return shell.parse(new File(pScript))
+	return shell.parse(new File('hydra/'+pScript))
 }
 
 println "FINAL GET ADD ONECLIENT"

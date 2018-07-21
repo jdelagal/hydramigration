@@ -1,20 +1,19 @@
-import groovy.json.*
-
-println "INICIO GET ADD CLIENTS"
+println "INICIO MIGRATION"
 println args[0]
 
 def paramArray = []
 paramArray.add(args[0])
 
-
 println migration(paramArray)
 
 def migration(paramArray){
-	def hostHydra = paramArray[0]
-	//def hostHydra = 'hydra-hydraserver.192.168.99.104.nip.io'
-	
-	def migration =  getShell('addCredentials.groovy').addCredentials(paramArray)
+    def migration =  getShell('hydra/hydraMigration.groovy').migration(paramArray)
 }
+
+
+
+
+println "FIN MIGRATION"
 
 /* 
 	11-jul-2018
@@ -23,8 +22,5 @@ def migration(paramArray){
 */
 def getShell(pScript){
 	GroovyShell shell = new GroovyShell()
-	return shell.parse(new File('hydra/'+pScript))
+	return shell.parse(new File(pScript))
 }
-
-
-println "FINAL GET ADD CLIENTS"

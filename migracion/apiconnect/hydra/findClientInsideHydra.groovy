@@ -46,7 +46,7 @@ def findClientInsideHydra(paramArray){
 def getShell(pScript){
 	GroovyShell shell = new GroovyShell()
 	/*parsea el codigo del script parseado*/
-	return shell.parse(new File(pScript))
+	return shell.parse(new File('hydra/'+pScript))
 }
 
 println "FIN FIND CLIENT INSIDE HYDRA"
