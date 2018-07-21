@@ -13,14 +13,15 @@ paramArray.add(props.getProperty('passConsumerOwner'))
 paramArray.add(props.getProperty('apiconnectHost'))
 paramArray.add(props.getProperty('orgOwnerCatalog'))
 paramArray.add(props.getProperty('orgConsumer'))
-paramArray.add(props.getProperty('hydraHost'))
+def paramArrayHydra = []
+paramArrayHydra.add(props.getProperty('hydraHost'))
 
-migration(paramArray)
+migration(paramArray, paramArrayHydra)
 
-def migration(paramArray){
-    def migration =  getShell('hydraMigration.groovy','hydra').migration(paramArray)
+def migration(paramArray, paramArrayHydra){
+    def migration =  getShell('hydraMigration.groovy','hydra').migration(paramArrayHydra)
 
-    def apiconnect =  getShell('apiconnectMigration.groovy', 'apiconnect').migration(paramArray)
+    //def apiconnect =  getShell('apiconnectMigration.groovy', 'apiconnect').migration(paramArray)
 }
 
 println "FIN MIGRATION"
