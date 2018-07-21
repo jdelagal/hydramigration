@@ -1,17 +1,20 @@
 println "INICIO MIGRATION"
-println args[0]
+
+Properties props = new Properties()
+File propsFile = new File('parametros.properties')
+props.load(propsFile.newDataInputStream())
+println props.getProperty('hydrahost')
+
+//println args[0]
 
 def paramArray = []
-paramArray.add(args[0])
+paramArray.add(props.getProperty('hydrahost'))
 
 println migration(paramArray)
 
 def migration(paramArray){
     def migration =  getShell('hydraMigration.groovy').migration(paramArray)
 }
-
-
-
 
 println "FIN MIGRATION"
 
