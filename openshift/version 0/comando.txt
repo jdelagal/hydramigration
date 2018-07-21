@@ -149,6 +149,8 @@ curl -k -v -X PUT \
  
  groovy saveCredentials.groovy jdelagal@gmail.com \!n0r1t5@C apim factoriaustglobal.sb myorganization
  groovy addCredentials.groovy hydra-hydraserver.192.168.99.104.nip.io
+ test / ba286c8c-ea6a-45a5-be6d-aac83c68a5e9
+ consumidor1 / password123
 
          curl -s -k -X POST \
         -H "Content-Type: application/x-www-form-urlencoded" \

@@ -15,10 +15,16 @@ paramArray.add(props.getProperty('orgOwnerCatalog'))
 paramArray.add(props.getProperty('orgConsumer'))
 def paramArrayHydra = []
 paramArrayHydra.add(props.getProperty('hydraHost'))
+def paramArrayKeycloak= []
+paramArrayKeycloak.add(props.getProperty('clientID'))
+paramArrayKeycloak.add(props.getProperty('secret'))
+paramArrayKeycloak.add(props.getProperty('preclientID'))
 
-migration(paramArray, paramArrayHydra)
+migration(paramArray, paramArrayHydra, paramArrayKeycloak)
 
-def migration(paramArray, paramArrayHydra){
+def migration(paramArray, paramArrayHydra, paramArrayKeycloak){
+    def keycloak  =  getShell('keycloakMigration.groovy','keycloak').migration(paramArrayKeycloak)
+
     def migration =  getShell('hydraMigration.groovy','hydra').migration(paramArrayHydra)
 
     //def apiconnect =  getShell('apiconnectMigration.groovy', 'apiconnect').migration(paramArray)
@@ -39,6 +45,9 @@ def getShell(pScript, server){
     }
 	if('apiconnect'.equals(server) ){
         ret =  shell.parse(new File('portal/'+pScript))
+    }
+	if('keycloak'.equals(server) ){
+        ret =  shell.parse(new File('keycloak/'+pScript))
     }
     return ret
 }
