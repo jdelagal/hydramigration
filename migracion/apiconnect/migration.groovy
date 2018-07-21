@@ -18,7 +18,7 @@ paramArray.add(props.getProperty('hydraHost'))
 migration(paramArray)
 
 def migration(paramArray){
-    //def migration =  getShell('hydraMigration.groovy','hydra').migration(paramArray)
+    def migration =  getShell('hydraMigration.groovy','hydra').migration(paramArray)
 
     def apiconnect =  getShell('apiconnectMigration.groovy', 'apiconnect').migration(paramArray)
 }
