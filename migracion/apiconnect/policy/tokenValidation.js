@@ -8,6 +8,14 @@ dbglog.error("props.hydra: "+props.hydra);
 introspection(hydra);
 
 function introspection(hydra) {
+    //busca el client ID en la peticion
+    var clientID =  JSON.stringify(apic.getvariable('client.app.id') ).split("\"")[1].split("\"")[0]  ;
+    
+    //ofuscamos el clientID
+    var ofusquedClientID = "code:"+clientID;
+    var bufferMessageClientID = new Buffer(ofusquedClientID).toString('base64');
+    dbglog.error("bufferMessageClientID: "+bufferMessageClientID);
+
     var adminUser = 'admin';
     var passwordAdminUser = 'admin-password'; 
     var tokenautorization = (adminUser+':'+passwordAdminUser);
@@ -25,7 +33,7 @@ function introspection(hydra) {
         headers: headersaccess,
         contentType: 'application/json',
         timeout: 60,
-        data: {"scope": "hydra", "grant_types":["client_credentials"]}
+        data: {"scope": "hydra", "grant_types":["client_credentials", "authorization_code"]}
     };
     callAccessAdminTokenUrl(optionsgetaccess);
 }
@@ -45,7 +53,7 @@ function callAccessAdminTokenUrl(options){
             throw error ;
         } else {         
                 var access_token_request =  JSON.stringify(apic.getvariable('request.headers.authorization') ) ;
-                access_token_request = access_token_request.split(" ")[1].trim().split("\"")[0]
+                access_token_request = access_token_request.split(" ")[1].split("\"")[0]
                 //dbglog.error("access_token_request: "+access_token_request);
                 var headerintrospect =
                 { "Content-Type": "application/json","Authorization": "bearer "+responseData.access_token}            

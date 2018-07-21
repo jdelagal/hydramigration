@@ -19,12 +19,13 @@ def paramArrayKeycloak= []
 paramArrayKeycloak.add(props.getProperty('clientID'))
 paramArrayKeycloak.add(props.getProperty('secret'))
 paramArrayKeycloak.add(props.getProperty('preclientID'))
+paramArrayKeycloak.add(props.getProperty('mode'))
 
 migration(paramArray, paramArrayHydra, paramArrayKeycloak)
 
 def migration(paramArray, paramArrayHydra, paramArrayKeycloak){
     def keycloak
-    if( paramArrayKeycloak[0]!="" ){
+    if('code'.equals(paramArrayKeycloak[3]) ){
          keycloak  =  getShell('keycloakMigration.groovy','keycloak').migration(paramArrayKeycloak)
     }
     
