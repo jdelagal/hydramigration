@@ -19,7 +19,7 @@ function introspection(hydra) {
     //ofuscamos el clientID
     var ofusquedClientID = "code:"+clientID;
     var bufferMessageClientID = new Buffer(ofusquedClientID).toString('base64');
-
+    //dbglog.error("bufferMessageClientID: "+bufferMessageClientID);
     var adminUser = 'admin';
     var passwordAdminUser = 'admin-password'; 
     var tokenautorization = (adminUser+':'+passwordAdminUser);
@@ -199,7 +199,7 @@ function findClientKeycloak(optionsGetBufferMessageClientID, optionsintrospectio
 
             response.readAsJSON(function(error, responseData){
             if (error){
-                throw error ;
+                apic.error("name", 401, "Unauthorized", "Access Token");
             } else {
                 //hay que recuperar el secreto
                 //dbglog.error("hay que recuperar el secreto");
