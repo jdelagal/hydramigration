@@ -36,9 +36,9 @@ function introspection(hydra) {
         timeout: 60,
         data: {"scope": "hydra", "grant_types":["client_credentials", "authorization_code"]}
     };
-    callAccessAdminTokenUrl(optionsgetaccess, clientID, ofusquedClientID);
+    callAccessAdminTokenUrl(optionsgetaccess, clientID, bufferMessageClientID);
 }
-function callAccessAdminTokenUrl(options, clientID, ofusquedClientID){
+function callAccessAdminTokenUrl(options, clientID, bufferMessageClientID){
     urlopen.open(options, function(error, response) {
         if(error) {		
             session.output.write("urlopen error: "+JSON.stringify(error));
@@ -63,8 +63,9 @@ function callAccessAdminTokenUrl(options, clientID, ofusquedClientID){
                 { "Content-Type": "application/x-www-form-urlencoded"} ; 
 
                 var target_introspect= "http://"+hydra+"/oauth2/introspect";
+                var target_introspect_keycloak= "http://"+keycloak+"/auth/realms/authcode/protocol/openid-connect/token/introspect";
                 var target_getClientID = "http://"+hydra+"/clients/"+clientID;
-                var target_getBufferMessageClientID = "https://"+keycloak+"/clients/"+ofusquedClientID;
+                var target_getBufferMessageClientID = "http://"+hydra+"/clients/"+bufferMessageClientID;
 
                 var optionsGetClientID = {
                     target: target_getClientID,
@@ -97,17 +98,17 @@ function callAccessAdminTokenUrl(options, clientID, ofusquedClientID){
                 };
 
                 var optionsintrospectionKeycloak = {
-                    target: target_introspect,
+                    target: target_introspect_keycloak,
                     sslClientProfile : 'webapi-sslcli-mgmt',
                     method: 'post',
-                    headers: headerintrospect,
-                    contentType: 'application/json',
+                    headers: headerintrospectKeycloak,
+                    contentType: 'application/x-www-form-urlencoded',
                     timeout: 60,
-                    data: {"token": access_token_request}
+                    data: {}
                 };
 
                 findClient(optionsGetClientID, optionsGetBufferMessageClientID, 
-                                    optionsintrospection, optionsintrospectionKeycloak);
+                                    optionsintrospection, optionsintrospectionKeycloak, access_token_request);
                 
             }});		
         }
@@ -115,7 +116,7 @@ function callAccessAdminTokenUrl(options, clientID, ofusquedClientID){
 }
 
 function findClient(optionsGetClientID, optionsGetBufferMessageClientID, 
-                                    optionsintrospection, optionsintrospectionKeycloak){
+                                    optionsintrospection, optionsintrospectionKeycloak, access_token_request){
 
     urlopen.open(optionsGetClientID, function(error, response) {
         if(error) {		
@@ -131,21 +132,19 @@ function findClient(optionsGetClientID, optionsGetBufferMessageClientID,
         if (error){
             throw error ;
             } else {
-                   if(responseStatusCode!==200){
-                        findClientKeycloak(optionsGetBufferMessageClientID, optionsintrospectionKeycloak);     
-                   }else{
-                        //dbglog.error("responseData token: "+responseData.token);
-                        callIntrospection(optionsintrospection);
-                   }
+                    //dbglog.error("responseData token: "+responseData.token);
+                    callIntrospection(optionsintrospection, 
+                                    optionsGetBufferMessageClientID, optionsintrospectionKeycloak, access_token_request);
                 }
             });		
         }
     });
 }
 
-function findClientKeycloak(optionsGetBufferMessageClientID, optionsintrospectionKeycloak){
+function findClientKeycloak(optionsGetBufferMessageClientID, optionsintrospectionKeycloak,
+                                    access_token_request){
 
-    urlopen.open(optionsGetClientID, function(error, response) {
+    urlopen.open(optionsGetBufferMessageClientID, function(error, response) {
         if(error) {		
             session.output.write("urlopen error: "+JSON.stringify(error));
         } else {
@@ -156,24 +155,26 @@ function findClientKeycloak(optionsGetBufferMessageClientID, optionsintrospectio
             dbglog.error("Response reason: " + responseReason);
 
             response.readAsJSON(function(error, responseData){
-        if (error){
-            throw error ;
+            if (error){
+                throw error ;
             } else {
-                   if(responseStatusCode===200){
-                        //dbglog.error("responseData token: "+responseData.token);
-                        dbglog.error("OK");   
-                   }else{
-                        apic.error("name", 401, "Unauthorized", "Access Token");  
-                   }
-                }
-            });		
+                //hay que recuperar el secreto
+                dbglog.error("hay que recuperar el secreto");
+                var secreto = responseData.owner;
+                var clientID = responseData.id;
+                //dbglog.error("secreto: "+secreto+ " clientID: "+clientID);
+                callIntrospectionKeycloak(optionsintrospectionKeycloak,clientID, secreto, access_token_request);
+            } 
+    
+        });		
         }
     });
 }
 
-function callIntrospection(options){
+function callIntrospection(optionsintrospection, 
+                                optionsGetBufferMessageClientID, optionsintrospectionKeycloak, access_token_request){
 
-    urlopen.open(options, function(error, response) {
+    urlopen.open(optionsintrospection, function(error, response) {
         if(error) {		
             session.output.write("urlopen error: "+JSON.stringify(error));
         } else {
@@ -188,7 +189,41 @@ function callIntrospection(options){
             throw error ;
             } else {
                    if(responseData.active!==true){
-                        apic.error("name", 401, "Unauthorized", "Access Token");      
+                        //apic.error("name", 401, "Unauthorized", "Access Token");
+                        //buscamos en Keycloak antes de lanzar 401
+                        findClientKeycloak(optionsGetBufferMessageClientID, optionsintrospectionKeycloak, access_token_request);  
+                   }else{
+                        //dbglog.error("responseData token: "+responseData.token);
+                        dbglog.error("OK");  
+                   }
+                }
+            });		
+        }
+    });
+}
+
+
+function callIntrospectionKeycloak( optionsintrospectionKeycloak,clientID, secreto, access_token_request){
+    optionsintrospectionKeycloak.data = "token="+access_token_request+"&client_id="+clientID+"&"+ "client_secret="+secreto;
+
+    //dbglog.error("optionsintrospectionKeycloak.data: "+optionsintrospectionKeycloak.data);  
+
+    urlopen.open(optionsintrospectionKeycloak, function(error, response) {
+        if(error) {		
+            session.output.write("urlopen error: "+JSON.stringify(error));
+        } else {
+            // get the response status code
+            var responseStatusCode = response.statusCode;
+            var responseReason = response.reason;
+            dbglog.error("Response status code: " + responseStatusCode);
+            dbglog.error("Response reason: " + responseReason);
+
+            response.readAsJSON(function(error, responseData){
+        if (error){
+            throw error ;
+            } else {
+                   if(responseData.active!==true){
+                        apic.error("name", 401, "Unauthorized", "Access Token");
                    }else{
                         //dbglog.error("responseData token: "+responseData.token);
                         dbglog.error("OK");  

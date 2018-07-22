@@ -435,11 +435,18 @@ curl -s -k \
 
 ----------------KEYCLOAK---------------------------------------------------
 curl -X POST \
-  http://keycloak-test.192.168.99.104.nip.io/auth/realms/master/protocol/openid-connect/token \
+  http://keycloak-test.192.168.99.104.nip.io/auth/realms/master/protocol/openid-connect/token  --insecure  \
   -H 'accept-language: application/json' \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/x-www-form-urlencoded' \
-  -d 'grant_type=password&username=6TQMR21Q&password=x77Aonjh&client_id=admin-cli'
+  -d 'grant_type=password&username=6TQMR21Q&password=x77Aonjh&client_id=admin-cli' 
+
+  curl -X POST \
+  http://keycloak-test.192.168.99.104.nip.io/auth/realms/master/protocol/openid-connect/token  
+  -H 'accept-language: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'grant_type=password&username=6TQMR21Q&password=x77Aonjh&client_id=admin-cli' 
 
 initail token
 eyJhbGciOiJSUzI1NiIsImtpZCIgOiAiOExBcTVHaEN4LW9pb0dQbHpfRnZncGRMaW83UGRpNEpOYVBwT2xmdmtjZyJ9.eyJqdGkiOiJiZGJlZWJhZC1lYTU1LTRiMzMtOWU5Ny1lYjE1NzhhYTU4ZmEiLCJleHAiOjE1MzcwMzM4MDgsIm5iZiI6MCwiaWF0IjoxNTMxODQ5ODA4LCJpc3MiOiJodHRwOi8va2V5Y2xvYWstdGVzdC4xOTIuMTY4Ljk5LjEwNC5uaXAuaW8vYXV0aC9yZWFsbXMvb2lkY3NlcnZlciIsImF1ZCI6Imh0dHA6Ly9rZXljbG9hay10ZXN0LjE5Mi4xNjguOTkuMTA0Lm5pcC5pby9hdXRoL3JlYWxtcy9vaWRjc2VydmVyIiwidHlwIjoiSW5pdGlhbEFjY2Vzc1Rva2VuIn0.eduBLT0bUvSaOZOXRkcrjl36ZjyVZ5W-VtFI6gIV3NNMFtc-N_1kPuu251HuvtTVub-k6GQx8hdiU3BQKuLPD5kH8Pd4q6dfZ6Tz-k4AwrMQD3o3UyKZ37reMqAga6C3KQDo3esJFFwolBaEdnHxddiHwP06cFFiaYdPwPLSYbAKOJVdKF8LpzLQvPA67DjYvtioVNv4g02SIFJMmeIJ0xhPI608Jmh_tOhV-kZYSfga-lvBwr2E-HVZSaBPwW525178GL6By2s2sz1a9f32yHxMyUASFpY_Ila26ROZZdrvyCZgl3Ez_cbEqdcpbpCyXc3C328yXn5kSYvB-W5JUA
@@ -486,3 +493,27 @@ Client secret: d6901f897bfb87e2ca0e3c0ad5bfb008a5c747e2
   -H "Content-Type: application/json" \
         -H "Authorization:bearer pAqfkwp073X0eu1vigay2hwGOjqcaYtS6NivBP2QXjk.95Iqg4gvRkvz2-0HBvWrU9YYKN0RXx9hA9erBaRllIQ" \
     "https://hydra-hydraserver.192.168.99.104.nip.io/clients/8c87ef48-ce96-46c5-af9b-e806af1bfb97"
+
+curl -X POST \
+  http://keycloak-test.192.168.99.104.nip.io/auth/realms/master/protocol/openid-connect/token \
+  -H 'accept-language: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'grant_type=password&username=6TQMR21Q&password=x77Aonjh&client_id=admin-cli'
+
+curl -X POST \
+  https://secure-keycloak-hydraserver.192.168.99.104.nip.io/auth/realms/authcode/protocol/openid-connect/token/introspect --insecure \
+  -H 'accept-language: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'token=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIzREZQLUZiSWY2S0ZDWVNkaGdQbGxpOGdZWFNIQmZZMWtmVlhTT0lkT2ZjIn0.eyJqdGkiOiJhNjg1ZDBhMC1jYTdhLTRkOTMtYmUwNi04Mzg5YjZkM2VmYjkiLCJleHAiOjE1MzIxOTI2MjMsIm5iZiI6MCwiaWF0IjoxNTMyMTg5MDIzLCJpc3MiOiJodHRwczovL3NlY3VyZS1rZXljbG9hay1oeWRyYXNlcnZlci4xOTIuMTY4Ljk5LjEwNC5uaXAuaW8vYXV0aC9yZWFsbXMvYXV0aGNvZGUiLCJhdWQiOiJ0ZXN0Iiwic3ViIjoiM2MzNjZiOGEtZTRlZS00MDM5LWE1NzYtMTFlZWRhMWZhZmIzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidGVzdCIsIm5vbmNlIjoiMTQ5MjdiY2YtMWUzMC00MzNlLTg3ODYtNzMxYTVmYzEwNzAyIiwiYXV0aF90aW1lIjoxNTMyMTg4NzM4LCJzZXNzaW9uX3N0YXRlIjoiMzFjYjdlNTktOTlhZi00NWY3LTllMDAtNzhmNzViNzVhYWNkIiwiYWNyIjoiMCIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwczovL29hdXRoMi1vaWRjLWRlYnVnZ2VyLWh5ZHJhc2VydmVyLjE5Mi4xNjguOTkuMTA0Lm5pcC5pby8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsidGVzdCI6eyJyb2xlcyI6WyJQMSJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiY29uc3VtaWRvcjEifQ.fWRE5QNHDcSFoF_dZ7LPi-eMlhIRHCZLSdrTU1UaYAJAkNQhos4R-tHLQ75fIKxDMjcW5pORG3DLdB46oin212wPoBMUWn6CKDtpuqPmehDuLK28z5HW8G1FJG3wtK7rpMM_4XzmB5rIUWRcKQ5vktqVrzWS1AJXK8XPfk8ELWjXNM3B0a3NZuH2-NmJ-DOXt6nfhkUqfWVnmQApuNXH2hnl3-1SFnCPYdSuyZ4Nfz1-Ui1UrMIzBIVk1EnjJHzR5x37vX6-5iyS98BV43CYE7teOzuJ2pPY6YWlkD9lpPjy1LDNTDlUT5olcTvvswxu2qltOrhwHhpz_dkYPtKYag&client_id=8c87ef48-ce96-46c5-af9b-e806af1bfb97&client_secret=ba286c8c-ea6a-45a5-be6d-aac83c68a5e9' 
+
+  &client_secret=ba286c8c-ea6a-45a5-be6d-aac83c68a5e9"
+
+
+curl -X POST \
+  https://secure-keycloak-hydraserver.192.168.99.104.nip.io/auth/realms/authcode/protocol/openid-connect/token/introspect --insecure \
+  -H 'accept-language: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'token=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIzREZQLUZiSWY2S0ZDWVNkaGdQbGxpOGdZWFNIQmZZMWtmVlhTT0lkT2ZjIn0.eyJqdGkiOiJhNjg1ZDBhMC1jYTdhLTRkOTMtYmUwNi04Mzg5YjZkM2VmYjkiLCJleHAiOjE1MzIxOTI2MjMsIm5iZiI6MCwiaWF0IjoxNTMyMTg5MDIzLCJpc3MiOiJodHRwczovL3NlY3VyZS1rZXljbG9hay1oeWRyYXNlcnZlci4xOTIuMTY4Ljk5LjEwNC5uaXAuaW8vYXV0aC9yZWFsbXMvYXV0aGNvZGUiLCJhdWQiOiJ0ZXN0Iiwic3ViIjoiM2MzNjZiOGEtZTRlZS00MDM5LWE1NzYtMTFlZWRhMWZhZmIzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidGVzdCIsIm5vbmNlIjoiMTQ5MjdiY2YtMWUzMC00MzNlLTg3ODYtNzMxYTVmYzEwNzAyIiwiYXV0aF90aW1lIjoxNTMyMTg4NzM4LCJzZXNzaW9uX3N0YXRlIjoiMzFjYjdlNTktOTlhZi00NWY3LTllMDAtNzhmNzViNzVhYWNkIiwiYWNyIjoiMCIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwczovL29hdXRoMi1vaWRjLWRlYnVnZ2VyLWh5ZHJhc2VydmVyLjE5Mi4xNjguOTkuMTA0Lm5pcC5pby8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsidGVzdCI6eyJyb2xlcyI6WyJQMSJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiY29uc3VtaWRvcjEifQ.fWRE5QNHDcSFoF_dZ7LPi-eMlhIRHCZLSdrTU1UaYAJAkNQhos4R-tHLQ75fIKxDMjcW5pORG3DLdB46oin212wPoBMUWn6CKDtpuqPmehDuLK28z5HW8G1FJG3wtK7rpMM_4XzmB5rIUWRcKQ5vktqVrzWS1AJXK8XPfk8ELWjXNM3B0a3NZuH2-NmJ-DOXt6nfhkUqfWVnmQApuNXH2hnl3-1SFnCPYdSuyZ4Nfz1-Ui1UrMIzBIVk1EnjJHzR5x37vX6-5iyS98BV43CYE7teOzuJ2pPY6YWlkD9lpPjy1LDNTDlUT5olcTvvswxu2qltOrhwHhpz_dkYPtKYag&client_id=8c87ef48-ce96-46c5-af9b-e806af1bfb97&client_secret=ba286c8c-ea6a-45a5-be6d-aac83c68a5e9' 
