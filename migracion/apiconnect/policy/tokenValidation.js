@@ -19,7 +19,7 @@ function introspection(hydra) {
     //ofuscamos el clientID
     var ofusquedClientID = "code:"+clientID;
     var bufferMessageClientID = new Buffer(ofusquedClientID).toString('base64');
-    //dbglog.error("bufferMessageClientID: "+bufferMessageClientID);
+    dbglog.error("bufferMessageClientID: "+bufferMessageClientID);
     var adminUser = 'admin';
     var passwordAdminUser = 'admin-password'; 
     var tokenautorization = (adminUser+':'+passwordAdminUser);
@@ -69,7 +69,7 @@ function callAccessAdminTokenUrl(options, clientID, bufferMessageClientID){
                 { "Content-Type": "application/x-www-form-urlencoded"} ; 
 
                 var target_introspect= hydra+"/oauth2/introspect";
-                var target_introspect_keycloak= keycloak+"/auth/realms/authcode/protocol/openid-connect/token/introspect";
+                var target_introspect_keycloak= keycloak;
                 var target_getClientID = hydra+"/clients/"+clientID;
                 var target_getBufferMessageClientID = hydra+"/clients/"+bufferMessageClientID;
 
