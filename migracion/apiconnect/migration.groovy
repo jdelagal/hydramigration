@@ -27,14 +27,16 @@ paramArrayKeycloak.add(props.getProperty('mode'))
 migration(paramArray, paramArrayHydra, paramArrayKeycloak)
 
 def migration(paramArray, paramArrayHydra, paramArrayKeycloak){
+    
     def keycloak
     if('code'.equals(paramArrayKeycloak[3]) ){
          keycloak  =  getShell('keycloakMigration.groovy','keycloak').migration(paramArrayKeycloak)
     }
-    
-    def migration =  getShell('hydraMigration.groovy','hydra').migration(paramArrayHydra)
 
     def apiconnect =  getShell('apiconnectMigration.groovy', 'apiconnect').migration(paramArray)
+
+    def migration =  getShell('hydraMigration.groovy','hydra').migration(paramArrayHydra)
+    
 }
 
 println "FIN MIGRATION"
