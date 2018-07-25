@@ -523,3 +523,129 @@ curl -X POST \
   documentacion 1efac1ce-7ab0-481e-b3ad-49ac9141b889 --> secret fb2d3950-4442-4a63-ae43-81b319aefd20
 
   https://oauth2-oidc-debugger-hydraserver.192.168.99.104.nip.io/*
+
+https://secure-keycloak-hydraserver.192.168.99.104.nip.io/auth/realms/authcode/protocol/openid-connect/auth?response_type=code&client_id=8c87ef48-ce96-46c5-af9b-e806af1bfb97&redirect_uri=https://oauth2-oidc-debugger-hydraserver.192.168.99.104.nip.io/callback&scope=openid profile UserCode
+
+testing / 944849b2-c038-4e08-839e-6671b452b115
+
+https://secure-keycloak-hydraserver.192.168.99.104.nip.io/auth/admin/master/console/#/realms/authcode
+
+https://oauth2-oidc-debugger-hydraserver.192.168.99.104.nip.io
+
+https://oauth2-oidc-debugger-hydraserver.192.168.99.104.nip.io/callback?state=bd4bdc75-a178-4cf2-b417-9965c6d51e3f&session_state=8597d934-ccae-4d93-8d0d-27d67ccdd6f8&code=eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..5S8YebfV1GjDYkQLMStg8A.SlzGMKlnWpVvDvTYRK4E9aDdbFtO9JibCpg34O0aX9cPJfktdkLREYlcEcuTZ6ryIowkp5A-CAGBlqZV6cnLyeyPkogM8zOV-Z-J3ESAkWBP-sJ5jnl2rWCdtlTlOjoqk8tD3EdMuDog7_Ym4aWKolsKs-LMG-lXdJ5B_A7Zg68QUTXBiXJAErs1XFLOvIfBgwaIWOZPu0zM7ZizDNVvLtfyEr4jY7KMxOo0qV3IKdd7r1DMOK_Q5LWxDehfRqZp.Tg8KjRne5beVKk7KPEXHLA
+
+curl -X POST \
+    -d '{ "clientId": "myclient" }' \
+    -H "Content-Type:application/json" \
+    -H "Authorization: bearer eyJhbGciOiJSUz..." \
+    https://secure-keycloak-test.192.168.99.104.nip.io/auth/realms/master/clients-registrations/default --insecure
+
+OJO  https://github.com/cyclone-project/cyclone-client-registration
+
+curl -X POST \
+  https://secure-keycloak-hydraserver.192.168.99.104.nip.io/auth/realms/master/client-registration --insecure \
+  -H 'authorization: bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJiaVRKQmJmR1BQd2t1VFh2VnE2aDc0Nkh1d3p5YVd5OXV4UEdqeVBlWlpVIn0.eyJqdGkiOiJiZGNjYzgzZC0xNGQ0LTRhMTctOWYyNi05ZWMwOTQ1YjFlN2MiLCJleHAiOjE1MzI0MzMyMzQsIm5iZiI6MCwiaWF0IjoxNTMyNDMzMTc0LCJpc3MiOiJodHRwczovL3NlY3VyZS1rZXljbG9hay1oeWRyYXNlcnZlci4xOTIuMTY4Ljk5LjEwNC5uaXAuaW8vYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoiYWRtaW4tY2xpIiwic3ViIjoiMTEyYTg3YzMtMGJhNC00ZTEzLTg5ODItNDdjOTAxYjQxOWEzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWRtaW4tY2xpIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiMDcwODg0NTItYjI5NC00MjVlLTkyNTktOGY1M2NhOGFkNDExIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6W10sInJlc291cmNlX2FjY2VzcyI6e30sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoid3h5cG9rYWwifQ.MYC_Udb9muXSBlilI7W8aiyWl2LUK9DPoKchOw-oefM_fSjjXjYVxSZfanDNdQ9BYvAM0rI0fe7WV1cO5MTUid-4S8k8uVOOrVPD7VgcYkjjzwQ_mH1sB0bLcrskFTGTXRAb-znOItN3bxks5xxeE4qiXhT3YUBF1Tyny9wRhPbWfawi3YzbuAdlT0FakRGyF9pFHQ_g4ieLoCyfJ1LlYMYxai9rNomCoB1_so82tz3dcJnFLapAUXo2sakMY-T2QenwLk9V-MOsFk5BAmGm-SPVXAF0x8WL_GFZDHglkAJCr8SzN1GyslaEcrZWCZRds-tgb3Opc14b0thHuu7uMA' \
+  -H 'cache-control: no-cache' \
+  -d '{ "clientId": "hello"}'
+
+
+  curl -X POST \
+  https://secure-keycloak-hydraserver.192.168.99.104.nip.io/auth/realms/authcode/clients-registrations/openid-connect --insecure \
+  -H 'authorization: bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJiaVRKQmJmR1BQd2t1VFh2VnE2aDc0Nkh1d3p5YVd5OXV4UEdqeVBlWlpVIn0.eyJqdGkiOiJiZGNjYzgzZC0xNGQ0LTRhMTctOWYyNi05ZWMwOTQ1YjFlN2MiLCJleHAiOjE1MzI0MzMyMzQsIm5iZiI6MCwiaWF0IjoxNTMyNDMzMTc0LCJpc3MiOiJodHRwczovL3NlY3VyZS1rZXljbG9hay1oeWRyYXNlcnZlci4xOTIuMTY4Ljk5LjEwNC5uaXAuaW8vYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoiYWRtaW4tY2xpIiwic3ViIjoiMTEyYTg3YzMtMGJhNC00ZTEzLTg5ODItNDdjOTAxYjQxOWEzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWRtaW4tY2xpIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiMDcwODg0NTItYjI5NC00MjVlLTkyNTktOGY1M2NhOGFkNDExIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6W10sInJlc291cmNlX2FjY2VzcyI6e30sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoid3h5cG9rYWwifQ.MYC_Udb9muXSBlilI7W8aiyWl2LUK9DPoKchOw-oefM_fSjjXjYVxSZfanDNdQ9BYvAM0rI0fe7WV1cO5MTUid-4S8k8uVOOrVPD7VgcYkjjzwQ_mH1sB0bLcrskFTGTXRAb-znOItN3bxks5xxeE4qiXhT3YUBF1Tyny9wRhPbWfawi3YzbuAdlT0FakRGyF9pFHQ_g4ieLoCyfJ1LlYMYxai9rNomCoB1_so82tz3dcJnFLapAUXo2sakMY-T2QenwLk9V-MOsFk5BAmGm-SPVXAF0x8WL_GFZDHglkAJCr8SzN1GyslaEcrZWCZRds-tgb3Opc14b0thHuu7uMA' \
+  -H 'cache-control: no-cache' \
+  -d '{ "clientId": "hello"}'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  61da984a-c238-44b8-8128-1b9e2dcb51d8 / P2tM0tX3oU5bJ7bM1qP5yV8aK2jL0kI2fJ8qV5cP8pL5yS8cR0
+
+  authcode
+  02b1120d-2da7-44ef-aafd-01525d708f55 / 6ab05d67-48b3-46e4-b2fd-80ba26091313
+
+  code:02b1120d-2da7-44ef-aafd-01525d708f55
+
+  serveroauthdemo
+
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucketByTags",
+                "s3:GetLifecycleConfiguration",
+                "s3:GetBucketTagging",
+                "s3:GetInventoryConfiguration",
+                "s3:GetObjectVersionTagging",
+                "s3:ListBucketVersions",
+                "s3:GetBucketLogging",
+                "s3:ListBucket",
+                "s3:GetAccelerateConfiguration",
+                "s3:GetBucketPolicy",
+                "s3:GetObjectVersionTorrent",
+                "s3:GetObjectAcl",
+                "s3:GetEncryptionConfiguration",
+                "s3:GetBucketRequestPayment",
+                "s3:GetObjectVersionAcl",
+                "s3:GetObjectTagging",
+                "s3:GetMetricsConfiguration",
+                "s3:HeadBucket",
+                "s3:GetIpConfiguration",
+                "s3:ListBucketMultipartUploads",
+                "s3:GetBucketWebsite",
+                "s3:GetBucketVersioning",
+                "s3:GetBucketAcl",
+                "s3:GetBucketNotification",
+                "s3:GetReplicationConfiguration",
+                "s3:ListMultipartUploadParts",
+                "s3:GetObject",
+                "s3:GetObjectTorrent",
+                "s3:ListAllMyBuckets",
+                "s3:GetBucketCORS",
+                "s3:GetAnalyticsConfiguration",
+                "s3:GetObjectVersionForReplication",
+                "s3:GetBucketLocation",
+                "s3:GetObjectVersion"
+            ],
+            "Resource": "arn:aws:s3:::serveroauthdemo"
+        }
+    ]
+}
+
+AKIAIK4D2RMM4YCGZKXQ / wHh0ixF/zqZlH4ZlPkLHl2E7RzkoDcVVBYjR5VOs
+
+code:client_id
+
+https://github.com/ibm-datapower/datapower-samples
+
+https://github.com/ozairs/apiconnect/tree/master/openbanking
