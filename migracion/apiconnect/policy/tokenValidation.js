@@ -139,7 +139,7 @@ function findClient(optionsGetClientID, optionsGetBufferMessageClientID,
             //dbglog.error("optionsGetClientID.target: "+optionsGetClientID.target);
             response.readAsJSON(function(error, responseData){
         if (error){
-                apic.error("name", 401, "Unauthorized", "Access Token");
+                apic.error("name", 401, "Unauthorized", "Access Token NO fue validado en Hydra.");
             } else {
 
                     callIntrospection(optionsintrospection, 
@@ -174,7 +174,8 @@ function callIntrospection(optionsintrospection,
                         //buscamos en Keycloak antes de lanzar 401
                         findClientKeycloak(optionsGetBufferMessageClientID, optionsintrospectionKeycloak, access_token_request);  
                    }else{
-                        dbglog.error("OK");  
+                        dbglog.error("OK"); 
+                        apic.error("resuesta", 200, "Hydra OK", "Access Token fue validado en Hydra."); 
                    }
                 }
             });		
@@ -199,7 +200,7 @@ function findClientKeycloak(optionsGetBufferMessageClientID, optionsintrospectio
 
             response.readAsJSON(function(error, responseData){
             if (error){
-                apic.error("name", 401, "Unauthorized", "Access Token");
+                apic.error("name", 401, "Unauthorized", "Access Token NO validado en Keycloak.");
             } else {
                 //hay que recuperar el secreto
                 //dbglog.error("hay que recuperar el secreto");
@@ -237,9 +238,10 @@ function callIntrospectionKeycloak( optionsintrospectionKeycloak,clientID, secre
             throw error ;
             } else {
                    if(responseData.active!==true){
-                        apic.error("name", 401, "Unauthorized", "Access Token");
+                        apic.error("name", 401, "Unauthorized", "Access Token NO validado en Keycloak.");
                    }else{
                         dbglog.error("OK");  
+                        apic.error("resuesta", 200, "Keycloak OK", "Access Token fue validado en Keycloak.");
                    }
                 }
             });		
